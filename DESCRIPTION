@@ -1,10 +1,10 @@
 Package: tealviz
-Title: What the Package Does (One Line, Title Case)
+Title: Data Visualization Tools for Teal Emery + Teal Insights
 Version: 0.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+    person("Teal", "Emery", , "lte@tealinsights.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0009-0002-4804-2202"))
+Description: tealviz is a collection of data visualization tools for Teal Emery + Teal Insights. The package is publicly available on GitHub with a permissive (MIT) license to facilitate the reproducibility of Teal Emery + Teal Insights analysis. I kindly ask that you don't use it for your own work, however you are welcome to use the code as a building block to create your own data viz package.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -14,3 +14,9 @@ BugReports: https://github.com/t-emery/tealviz/issues
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Imports: 
+    dplyr,
+    ggplot2,
+    ggtext,
+    purrr,
+    systemfonts
