@@ -17,8 +17,8 @@
 #' @export
 #'
 theme_ti <- function(
-    title_font = "Roboto",
-    base_font = "Roboto",
+    title_font = "Roboto Condensed Bold",
+    base_font = "Roboto Condensed",
     void = FALSE,
     show_grid_lines = TRUE,
     base_text_size = 11,

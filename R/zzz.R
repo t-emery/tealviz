@@ -3,18 +3,10 @@
 
 .onLoad <- function(...) {
 
-  font_hoist <- function(family_name, silent = FALSE) {
-    font_specs <- systemfonts::system_fonts() |>
-      dplyr::filter(family == {{family_name}}) |>
-      dplyr::mutate(family = paste(family, style)) |>
-      dplyr::select(plain = path, name = family)
+  # these are the fonts to load
+  fonts_to_hoist <- c("Roboto", "Roboto Condensed", "Lora", "Inconsolata")
 
-    purrr::pwalk(as.list(font_specs), systemfonts::register_font)
-
-    if (!silent)  message(paste0("Hoisted ", nrow(font_specs), " variants:\n",
-                                 paste(font_specs$name, collapse = "\n")))
-  }
-
-  font_hoist("Roboto Condensed")
+  # use font_hoist() to load them all
+  fonts_to_hoist |> purrr::map(.f = font_hoist)
 
 }

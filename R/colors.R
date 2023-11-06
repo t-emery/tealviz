@@ -161,3 +161,5 @@ scale_fill_ti <- function(palette = "default",
                  ...)
 
 }
+
+# write unit tests for ti_palette and scale_color_ti
