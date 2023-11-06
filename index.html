@@ -7,12 +7,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="tealviz is a collection of data visualization tools for Teal Emery + Teal Insights. The package is publicly available on GitHub with a permissive (MIT) license to facilitate the reproducibility of Teal Emery + Teal Insights analysis. I kindly ask that you don't use it for your own work, however you are welcome to use the code as a building block to create your own data viz package.">
 <title>Data Visualization Tools for Teal Emery + Teal Insights • tealviz</title>
+<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="apple-touch-icon-76x76.png">
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Data Visualization Tools for Teal Emery + Teal Insights">
 <meta property="og:description" content="tealviz is a collection of data visualization tools for Teal Emery + Teal Insights. The package is publicly available on GitHub with a permissive (MIT) license to facilitate the reproducibility of Teal Emery + Teal Insights analysis. I kindly ask that you don't use it for your own work, however you are welcome to use the code as a building block to create your own data viz package.">
+<meta property="og:image" content="https://t-emery.github.io/tealviz/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -58,39 +65,65 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="tealviz">tealviz<a class="anchor" aria-label="anchor" href="#tealviz"></a>
-</h1></div>
+<div class="page-header">
+<img src="logo.png" class="logo" alt=""><h1 id="tealviz-">tealviz 
+<a class="anchor" aria-label="anchor" href="#tealviz-"></a>
+</h1>
+</div>
 <!-- badges: start -->
 <!-- badges: end -->
-<p>The goal of tealviz is to …</p>
+<p><code>tealviz</code> is a collection of data visualization tools for <a href="https://www.tealemery.com/" class="external-link">Teal Emery</a> + <a href="https://www.linkedin.com/company/teal-insights/?viewAsMember=true" class="external-link">Teal Insights</a>. The package is publicly available on GitHub with a permissive (MIT) license to facilitate the reproducibility of Teal Emery + Teal Insights analysis. I kindly ask that you don’t use it for your own work, however you are welcome to use the code as a building block to create your own data viz package.</p>
+<p>This package builds upon a package that <a href="https://www.cararthompson.com/" class="external-link">Cara Thompson</a> helped me build. I’m a researcher, not an artist, so having such a skilled designer help me build this package was a huge help. I highly recommend her work. The inspired coding &amp; visual design work are hers. The mistakes are mine.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p>You can install the development version of tealviz from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># devtools::install_github("t-emery/tealviz")</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"t-emery/tealviz"</span><span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="fonts">Fonts<a class="anchor" aria-label="anchor" href="#fonts"></a>
+</h3>
+<p><code>tealvis</code> assumes that the user has fonts installed on their computer. The package will not install fonts for you. If you do not have the fonts installed, the package will not work. The fonts used in this package are: <code>Roboto</code>, <code>Roboto Condensed</code>, <code>Lora</code>, and <code>Lora Bold</code>. You can install them from <a href="https://fonts.google.com/" class="external-link">Google Fonts</a>. They are also available as assets in the <code>tealviz</code> package. You can find them in the <code>inst/assets/fonts</code> folder of the GitHub repo. You can install them with the <code>extrafont</code> package.</p>
+<p>Fonts are tricky in R. If you’re having trouble, read this <a href="https://yjunechoe.github.io/posts/2021-06-24-setting-up-and-debugging-custom-fonts/" class="external-link">excellent explainer by June Choe</a>.</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
-<p>This is a basic example which shows you how to solve a common problem:</p>
+<p>The core of the <code>tealviz</code> package is a series of <code>ggplot2</code> custom themes, and custom colors/palettes.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#library(tealviz)</span></span>
-<span><span class="co">## basic example code</span></span></code></pre></div>
-<p>What is special about using <code>README.Rmd</code> instead of just <code>README.md</code>? You can include R chunks like so:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">cars</span><span class="op">)</span></span>
-<span><span class="co">#&gt;      speed           dist       </span></span>
-<span><span class="co">#&gt;  Min.   : 4.0   Min.   :  2.00  </span></span>
-<span><span class="co">#&gt;  1st Qu.:12.0   1st Qu.: 26.00  </span></span>
-<span><span class="co">#&gt;  Median :15.0   Median : 36.00  </span></span>
-<span><span class="co">#&gt;  Mean   :15.4   Mean   : 42.98  </span></span>
-<span><span class="co">#&gt;  3rd Qu.:19.0   3rd Qu.: 56.00  </span></span>
-<span><span class="co">#&gt;  Max.   :25.0   Max.   :120.00</span></span></code></pre></div>
-<p>You’ll still need to render <code>README.Rmd</code> regularly, to keep <code>README.md</code> up-to-date. <code>devtools::build_readme()</code> is handy for this.</p>
-<p>You can also embed plots, for example:</p>
-<p><img src="reference/figures/README-pressure-1.png" width="100%"></p>
-<p>In that case, don’t forget to commit and push the resulting figure files, so they display on GitHub and CRAN.</p>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/t-emery/tealviz" class="external-link">tealviz</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; [32mSuccessfully hoisted 6 font(s) for the family 'Roboto': Roboto Bold, Roboto Italic, Roboto Bold Italic, Roboto Regular, Roboto Regular, Roboto Bold[0m</span></span>
+<span><span class="co">#&gt; [32mThe following font(s) for the family 'Roboto' are already loaded: Roboto Medium[0m</span></span>
+<span><span class="co">#&gt; [32mSuccessfully hoisted 6 font(s) for the family 'Roboto Condensed': Roboto Condensed Italic, Roboto Condensed Light Italic, Roboto Condensed Bold Italic, Roboto Condensed Bold, Roboto Condensed Light, Roboto Condensed Regular[0m</span></span>
+<span><span class="co">#&gt; [32mSuccessfully hoisted 8 font(s) for the family 'Lora': Lora Italic, Lora SemiBold Italic, Lora Regular, Lora Bold, Lora SemiBold, Lora Medium Italic, Lora Medium, Lora Bold Italic[0m</span></span>
+<span><span class="co">#&gt; [32mSuccessfully hoisted 8 font(s) for the family 'Inconsolata': Inconsolata Bold, Inconsolata SemiBold, Inconsolata Light, Inconsolata Medium, Inconsolata ExtraLight, Inconsolata Black, Inconsolata Regular, Inconsolata ExtraBold[0m</span></span>
+<span><span class="co"># On loading the package, the `font_hoist()` function automatically makes sure the fonts are available for use. You will see messages in the console to inform you whether the fonts loaded correctly or not. </span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: package 'ggplot2' was built under R version 4.3.1</span></span>
+<span></span>
+<span><span class="fu">palmerpenguins</span><span class="fu">::</span><span class="va">penguins</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bill_length_mm</span>,</span>
+<span>                 y <span class="op">=</span> <span class="va">flipper_length_mm</span>,</span>
+<span>                 size <span class="op">=</span> <span class="va">body_mass_g</span>,</span>
+<span>                 fill <span class="op">=</span> <span class="va">body_mass_g</span><span class="op">)</span>,</span>
+<span>             shape <span class="op">=</span> <span class="fl">21</span>,</span>
+<span>             color <span class="op">=</span> <span class="va">ti_colors</span><span class="op">$</span><span class="va">background</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Perfectly proportional penguins"</span>,</span>
+<span>       subtitle <span class="op">=</span> <span class="st">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."</span>,</span>
+<span>       x <span class="op">=</span> <span class="st">"Bill length (mm)"</span>,</span>
+<span>       y <span class="op">=</span> <span class="st">"Flipper length (mm)"</span>,</span>
+<span>       fill <span class="op">=</span> <span class="st">"Body mass (g)"</span>,</span>
+<span>       caption <span class="op">=</span> <span class="st">"Demo plot, built with {palmerpenguins}"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html" class="external-link">guides</a></span><span class="op">(</span>size <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/scale_fill_ti.html">scale_fill_ti</a></span><span class="op">(</span>continuous <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="reference/theme_ti.html">theme_ti</a></span><span class="op">(</span>title_font <span class="op">=</span> <span class="st">"Roboto Condensed Bold"</span>,</span>
+<span>           base_font <span class="op">=</span> <span class="st">"Roboto Condensed"</span>,</span>
+<span>           background_color <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>           void <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> </span>
+<span><span class="co">#&gt; Warning: Removed 2 rows containing missing values (`geom_point()`).</span></span></code></pre></div>
+<p><img src="reference/figures/README-example-1.png" width="100%"></p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
