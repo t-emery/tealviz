@@ -38,8 +38,10 @@ installed, the package will not work. The fonts used in this package
 are: `Roboto`, `Roboto Condensed`, `Lora`, and `Lora Bold`. You can
 install them from [Google Fonts](https://fonts.google.com/). They are
 also available as assets in the `tealviz` package. You can find them in
-the `inst/assets/fonts` folder of the GitHub repo. You can install them
-with the `extrafont` package.
+the
+[`inst/assets/fonts`](https://github.com/t-emery/tealviz/tree/main/inst/assets/fonts)
+folder of the GitHub repo. You can install them with the `extrafont`
+package.
 
 Fonts are tricky in R. If you’re having trouble, read this [excellent
 explainer by June
@@ -85,3 +87,10 @@ palmerpenguins::penguins |>
 ```
 
 <img src="man/figures/README-example-1.png" width="100%" />
+
+The Title and Subtitle use
+[`ggtext`](https://wilkelab.org/ggtext/articles/introduction.html) under
+the hood. This adds powerful functionality, to be explored in its own
+vignette. For now, know that it will auto-wrap the subtitle so you can
+provide commentary about the visualizations key takeaways without
+worrying about line breaks.
