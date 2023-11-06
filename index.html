@@ -83,7 +83,7 @@
 <div class="section level3">
 <h3 id="fonts">Fonts<a class="anchor" aria-label="anchor" href="#fonts"></a>
 </h3>
-<p><code>tealvis</code> assumes that the user has fonts installed on their computer. The package will not install fonts for you. If you do not have the fonts installed, the package will not work. The fonts used in this package are: <code>Roboto</code>, <code>Roboto Condensed</code>, <code>Lora</code>, and <code>Lora Bold</code>. You can install them from <a href="https://fonts.google.com/" class="external-link">Google Fonts</a>. They are also available as assets in the <code>tealviz</code> package. You can find them in the <code>inst/assets/fonts</code> folder of the GitHub repo. You can install them with the <code>extrafont</code> package.</p>
+<p><code>tealvis</code> assumes that the user has fonts installed on their computer. The package will not install fonts for you. If you do not have the fonts installed, the package will not work. The fonts used in this package are: <code>Roboto</code>, <code>Roboto Condensed</code>, <code>Lora</code>, and <code>Lora Bold</code>. You can install them from <a href="https://fonts.google.com/" class="external-link">Google Fonts</a>. They are also available as assets in the <code>tealviz</code> package. You can find them in the <a href="https://github.com/t-emery/tealviz/tree/main/inst/assets/fonts" class="external-link"><code>inst/assets/fonts</code></a> folder of the GitHub repo. You can install them with the <code>extrafont</code> package.</p>
 <p>Fonts are tricky in R. If you’re having trouble, read this <a href="https://yjunechoe.github.io/posts/2021-06-24-setting-up-and-debugging-custom-fonts/" class="external-link">excellent explainer by June Choe</a>.</p>
 </div>
 </div>
@@ -124,6 +124,7 @@
 <span>           void <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> </span>
 <span><span class="co">#&gt; Warning: Removed 2 rows containing missing values (`geom_point()`).</span></span></code></pre></div>
 <p><img src="reference/figures/README-example-1.png" width="100%"></p>
+<p>The Title and Subtitle use <a href="https://wilkelab.org/ggtext/articles/introduction.html" class="external-link"><code>ggtext</code></a> under the hood. This adds powerful functionality, to be explored in its own vignette. For now, know that it will auto-wrap the subtitle so you can provide commentary about the visualizations key takeaways without worrying about line breaks.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
