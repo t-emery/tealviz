@@ -1,6 +1,6 @@
 Package: tealviz
 Title: Data Visualization Tools for Teal Emery + Teal Insights
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R: 
     person("Teal", "Emery", , "lte@tealinsights.com", role = c("aut", "cre"),
            comment = c(ORCID = "0009-0002-4804-2202"))
@@ -19,5 +19,4 @@ Imports:
     ggplot2,
     ggtext,
     purrr,
-    rlang,
     systemfonts
