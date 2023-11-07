@@ -106,3 +106,109 @@ theme_ti <- function(
 
 }
 
+
+# theme_ti_1 <- function(base_size = 12, base_family = "Roboto Condensed", title_size=18, subtitle_size=12, axis_size=10, caption_size=8){
+#   theme_minimal(base_size = base_size, base_family = base_family) %+replace%
+#     theme(
+#       text = element_text(family = base_family, size = base_size),
+#       plot.title = element_text(family = paste(base_family,"Bold"), size = title_size, hjust=0),
+#       plot.subtitle = element_text(family = paste(base_family,"Italic"), size = subtitle_size, hjust=0, margin = margin(0.2, 0, 0.5, 0, unit="cm")),
+#       plot.caption = element_text(family = paste(base_family,"Light Italic"), size = caption_size, margin = margin(0.5, 0, 0, 0, unit = "cm"), hjust = 1),
+#       axis.title = element_text(family = paste(base_family,"Bold"), size = axis_size),
+#       axis.text = element_text(family = paste(base_family,"Light"), size = axis_size-2),
+#       plot.background = element_rect(fill = "#F5F5F5", color = NA),
+#       panel.background = element_rect(fill = "#F5F5F5", color = NA),
+#       legend.position = "bottom"
+#     )
+# }
+
+#' ggplot Theme version 1
+#'
+#' @param base_size Text Size
+#' @param base_family Text Font
+#' @param title_size Size of Title Text
+#' @param subtitle_size Size of Subtitle Text
+#' @param axis_size Size of Axis Text
+#' @param caption_size Size of Caption Text
+#'
+theme_ti_1 <- function(base_size = 12, base_family = "Roboto Condensed", title_size=18, subtitle_size=12, axis_size=10, caption_size=8){
+  # Start with ggplot2's theme_minimal and then modify further
+  bespoke_theme <- ggplot2::theme_minimal(base_size = base_size, base_family = base_family) + #ggplot2::`%+replace%`()
+    ggplot2::theme(
+      # Set up the text elements with the specified fonts and sizes
+      text = ggplot2::element_text(family = base_family, size = base_size),
+      plot.title = ggplot2::element_text(family = paste(base_family,"Bold"), size = title_size, hjust=0),
+      plot.subtitle = ggplot2::element_text(family = paste(base_family,"Italic"), size = subtitle_size, hjust=0, margin = ggplot2::margin(0.2, 0, 0.5, 0, "cm")),
+      plot.caption = ggplot2::element_text(family = paste(base_family,"Light Italic"), size = caption_size, margin = ggplot2::margin(0.5, 0, 0, 0, "cm"), hjust = 1),
+      axis.title = ggplot2::element_text(family = paste(base_family,"Bold"), size = axis_size),
+      axis.text = ggplot2::element_text(family = paste(base_family,"Light"), size = axis_size-2),
+      # Customize the plot and panel backgrounds
+      plot.background = ggplot2::element_rect(fill = "#F5F5F5", color = NA),
+      panel.background = ggplot2::element_rect(fill = "#F5F5F5", color = NA),
+      # Position the legend at the bottom
+      legend.position = "bottom"
+    )
+  bespoke_theme
+}
+
+
+#' ggplot Theme version 2
+#'
+#' @param base_size Text Size
+#' @param base_family Text Font
+#' @param title_size Size of Title Text
+#' @param subtitle_size Size of Subtitle Text
+#' @param axis_size Size of Axis Text
+#' @param caption_size Size of Caption Text
+#'
+
+# theme_ti_2 <- function(base_size = 12, base_family = "Roboto Condensed",
+#                        title_size=18, subtitle_size=12, axis_size=10, caption_size=8){
+#
+#   theme_minimal(base_size = base_size, base_family = base_family) %+replace%
+#     theme(
+#       text = element_text(family = base_family, size = base_size),
+#       plot.title = element_text(family = paste(base_family,"Bold"), size = title_size, hjust=0),
+#       plot.subtitle = element_text(family = paste(base_family,"Light Italic"), size = subtitle_size, hjust=0, margin = margin(0.2, 0, 0.5, 0, unit="cm")),
+#       plot.caption = element_text(family = paste(base_family,"Light Italic"), size = caption_size, margin = margin(0.5, 0, 0, 0, unit = "cm"), hjust = 1),
+#       axis.title = element_text(family = paste(base_family,"Bold"), size = axis_size),
+#       axis.text = element_text(family = paste(base_family,"Light"), size = axis_size-2, colour="#626262"),
+#       plot.background = element_rect(fill = "#F5F5F5", color = NA),
+#       panel.background = element_rect(fill = "#F5F5F5", color = NA),
+#       legend.position = "bottom",
+#       panel.grid = element_blank(),
+#       axis.line = element_line(colour="#626262")
+#     )
+# }
+
+theme_ti_2 <- function(base_size = 12, base_family = "Roboto Condensed",
+                       title_size=18, subtitle_size=12, axis_size=10, caption_size=8){
+
+  # Start with the minimal theme as a base and apply customizations
+  ggplot2::theme_minimal(base_size = base_size, base_family = base_family) + #%+replace%
+    ggplot2::theme(
+      # Set global text appearance using the specified font family and base size
+      text = ggplot2::element_text(family = base_family, size = base_size),
+      # Customize the plot title
+      plot.title = ggplot2::element_text(family = paste(base_family,"Bold"), size = title_size, hjust=0),
+      # Customize the plot subtitle
+      plot.subtitle = ggplot2::element_text(family = paste(base_family,"Light Italic"), size = subtitle_size, hjust=0, margin = ggplot2::margin(0.2, 0, 0.5, 0, "cm")),
+      # Customize the plot caption
+      plot.caption = ggplot2::element_text(family = paste(base_family,"Light Italic"), size = caption_size, margin = ggplot2::margin(0.5, 0, 0, 0, "cm"), hjust = 1),
+      # Customize the axis titles
+      axis.title = ggplot2::element_text(family = paste(base_family,"Bold"), size = axis_size),
+      # Customize the axis text
+      axis.text = ggplot2::element_text(family = paste(base_family,"Light"), size = axis_size-2, colour="#626262"),
+      # Set the plot background
+      plot.background = ggplot2::element_rect(fill = "#F5F5F5", color = NA),
+      # Set the panel background
+      panel.background = ggplot2::element_rect(fill = "#F5F5F5", color = NA),
+      # Position the legend at the bottom of the plot
+      legend.position = "bottom",
+      # Remove panel grid lines
+      panel.grid = ggplot2::element_blank(),
+      # Customize axis lines
+      axis.line = ggplot2::element_line(colour="#626262")
+    )
+}
+

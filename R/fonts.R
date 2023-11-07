@@ -18,7 +18,8 @@
 #' # load Roboto Condensed (must be loaded from Google Fonts on system already)
 #' font_hoist("Roboto Condensed")
 #'
-#' # try loading a font not on your computer, or that doesn't exist. It will give an informative error message.
+#' # Try loading a font not on your computer, or that doesn't exist.
+#' # It will give an informative error message.
 #' font_hoist("Lobster Monster")
 
 
@@ -36,10 +37,12 @@ font_hoist <- function(family_name, silent = FALSE) {
   already_loaded_fonts <- c()
 
   # Step 1: Fetch all system fonts using the systemfonts package
+
   font_specs <- systemfonts::system_fonts() |>
-    dplyr::filter(family == .env[["family_name"]]) |>
-    dplyr::mutate(family = paste(.data[["family"]], .data[["style"]])) |>
-    dplyr::select(plain = .data[["path"]], name = .data[["family"]])
+    dplyr::filter(family == family_name) |>
+    dplyr::mutate(family = paste(family, style)) |>
+    dplyr::select(plain = path, name = family)
+
 
   # Step 2: Check if any fonts were found for the given family name
   if (nrow(font_specs) == 0) {
@@ -83,7 +86,8 @@ font_hoist <- function(family_name, silent = FALSE) {
 
   # Step 6: Return the list of font specifications invisibly
   return(invisible(font_specs))
-}
+  }
+
 
 
 

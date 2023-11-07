@@ -25,6 +25,7 @@ This function requires the user to have already downloaded the font on their com
 # load Roboto Condensed (must be loaded from Google Fonts on system already)
 font_hoist("Roboto Condensed")
 
-# try loading a font not on your computer, or that doesn't exist. It will give an informative error message.
+# Try loading a font not on your computer, or that doesn't exist.
+# It will give an informative error message.
 font_hoist("Lobster Monster")
 }
