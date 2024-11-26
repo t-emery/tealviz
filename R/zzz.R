@@ -1,5 +1,4 @@
 # Package startup message and font loading
-
 .onLoad <- function(...) {
   # Define required fonts
   fonts_to_check <- c(
