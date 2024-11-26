@@ -75,13 +75,28 @@ test_that("scale_color_ti returns the correct discrete scale", {
 })
 
 test_that("scale_color_ti reverses palettes correctly", {
-  scale <- scale_color_ti(
+  # Create scales with default and reversed palettes
+  scale_default <- scale_color_ti(
+    palette = "default",
+    reverse = FALSE,
+    .colors = ti_colors,
+    .palettes = ti_palettes
+  )
+
+  scale_reversed <- scale_color_ti(
     palette = "default",
     reverse = TRUE,
     .colors = ti_colors,
     .palettes = ti_palettes
   )
-  expect_equal(scale$scale_name, rev(ti_palettes$default))
+
+  # Get colors from both scales for comparison
+  n_colors <- 4  # Number of colors in default palette
+  default_colors <- scale_default$palette(n_colors)
+  reversed_colors <- scale_reversed$palette(n_colors)
+
+  # Check if reversed colors match the expected order
+  expect_equal(reversed_colors, rev(default_colors))
 })
 
 
@@ -105,11 +120,24 @@ test_that("scale_fill_ti returns correct ggplot2 scale w/ default parameters", {
 })
 
 test_that("scale_fill_ti handles reversing palettes", {
-  scale <- scale_fill_ti(palette = "default", reverse = TRUE)
-  reversed_palette <- rev(ti_palettes$default)
-  # Assuming scale_color_ti is correct, we test if scale_fill_ti passes the
-  # correct arguments to scale_color_ti
-  expect_equal(scale$scale_name, reversed_palette)
+  # Create scales with default and reversed palettes
+  scale_default <- scale_fill_ti(
+    palette = "default",
+    reverse = FALSE
+  )
+
+  scale_reversed <- scale_fill_ti(
+    palette = "default",
+    reverse = TRUE
+  )
+
+  # Get colors from both scales for comparison
+  n_colors <- 4  # Number of colors in default palette
+  default_colors <- scale_default$palette(n_colors)
+  reversed_colors <- scale_reversed$palette(n_colors)
+
+  # Check if reversed colors match the expected order
+  expect_equal(reversed_colors, rev(default_colors))
 })
 
 
