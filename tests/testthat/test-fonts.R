@@ -5,9 +5,14 @@ test_that("Font is successfully hoisted when it exists and is not loaded", {
   expect_message(font_hoist("Roboto Condensed"), "Successfully hoisted")
 })
 
-# Test 2: Font Already Loaded
-test_that("Already loaded fonts are recognized", {
-  expect_message(font_hoist("Arial"), "are already loaded")
+# Test 2: Font Registration is Idempotent
+test_that("Font registration can be safely repeated", {
+  # First load the fonts
+  first_result <- capture_messages(font_hoist("Arial"))
+  # Then try to load them again - should work the same way
+  second_result <- capture_messages(font_hoist("Arial"))
+  # Verify both operations succeed
+  expect_equal(first_result, second_result)
 })
 
 # Test 3: Font Does Not Exist

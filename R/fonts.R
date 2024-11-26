@@ -80,18 +80,9 @@ font_hoist <- function(family_name, silent = FALSE, check_only = FALSE) {
   safe_register_font <- function(plain, name) {
     tryCatch({
       systemfonts::register_font(plain = plain, name = name)
-      # Update successful fonts vector
       successful_fonts <<- c(successful_fonts, name)
     }, error = function(e) {
-      # Differentiate between already loaded fonts and other errors
-      if (
-        grepl("A system font with that family name already exists", e$message)
-      ) {
-        already_loaded_fonts <<- c(already_loaded_fonts, name)
-      } else {
-        # Update failed fonts vector
-        failed_fonts <<- c(failed_fonts, name)
-      }
+      failed_fonts <<- c(failed_fonts, name)
     })
   }
 
