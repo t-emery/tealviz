@@ -32,7 +32,7 @@ devtools::install_github("t-emery/tealviz")
 
 ### Fonts
 
-`tealvis` assumes that the user has fonts installed on their computer.
+`tealviz` assumes that the user has fonts installed on their computer.
 The package will not install fonts for you. If you do not have the fonts
 installed, the package will not work. The fonts used in this package
 are: `Roboto`, `Roboto Condensed`, `Lora`, and `Lora Bold`. You can

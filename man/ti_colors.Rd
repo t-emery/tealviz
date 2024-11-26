@@ -11,7 +11,8 @@ An object of class \code{list} of length 20.
 ti_colors
 }
 \description{
-Anchor colors used to create the TI color palettes. These can also be used as stand-alone colors
-(e.g. ti_colors$gold returns the hex code \"#f8c03e\")
+Anchor colors used to create the TI color palettes.
+These can also be used as stand-alone colors (e.g. ti_colors$gold returns the
+hex code \"#f8c03e\")
 }
 \keyword{datasets}

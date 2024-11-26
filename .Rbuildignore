@@ -1,3 +1,5 @@
+^renv$
+^renv\.lock$
 ^tealviz\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
@@ -6,3 +8,4 @@
 ^docs$
 ^pkgdown$
 ^\.github$
+^.lintr$

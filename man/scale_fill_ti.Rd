@@ -15,21 +15,30 @@ scale_fill_ti(
 )
 }
 \arguments{
-\item{palette}{The TI palette you want to use. Choose from "default", "teal_to_gold", "teal_to_crimson", "cool_colors", "warm_colors", "skip_gold", "neg_to_pos", "us_rep_to_dem" or "divergent"}
+\item{palette}{The TI palette you want to use. Choose from "default",
+"teal_to_gold", "teal_to_crimson", "cool_colors", "warm_colors", "skip_gold",
+"neg_to_pos", "us_rep_to_dem" or "divergent"}
 
-\item{reverse}{Logical. Default is \code{FALSE}. Change to \code{TRUE} to reverse the palette (e.g. to make "neg_to_pos" start with the positive end rather than the negative end of the colour palette).}
+\item{reverse}{Logical. Default is \code{FALSE}. Change to \code{TRUE} to reverse the
+palette (e.g. to make "neg_to_pos" start with the positive end rather than
+the negative end of the colour palette).}
 
-\item{continuous}{Logical. Default is \code{FALSE}. Change to \code{TRUE} when applying the color scale to a continuous variable}
+\item{continuous}{Logical. Default is \code{FALSE}. Change to \code{TRUE} when applying
+the color scale to a continuous variable}
 
-\item{.aesthetic}{Default is "fill". Can be changed to "color", but it's best to use \code{scale_color_ti()} to apply the color palettes to the color aesthetic.}
+\item{.aesthetic}{Default is "fill". Can be changed to "color", but it's best
+to use \code{scale_color_ti()} to apply the color palettes to the color aesthetic.}
 
 \item{.colors}{ti_colors}
 
 \item{.palettes}{ti_palettes}
 
-\item{...}{Additional arguments to pass to \code{ggplot2::continuous_scale} / \code{ggplot2::discrete_scale} (e.g. \code{guide}, \code{limits}, etc.)}
+\item{...}{Additional arguments to pass to \code{ggplot2::continuous_scale} /
+\code{ggplot2::discrete_scale} (e.g. \code{guide}, \code{limits}, etc.)}
 }
 \description{
-A function to apply the TI color palettes to ggplots, using interpolation to ensure the right number of colors.
-It builds upon \code{scale_color_ti()}, to ensure the two functions remain aligned in future developments.
+A function to apply the TI color palettes to ggplots, using interpolation to
+ensure the right number of colors.
+It builds upon \code{scale_color_ti()}, to ensure the two functions remain aligned
+in future developments.
 }

@@ -1,8 +1,4 @@
 
-
-#library(testthat)
-#library(ggplot2)
-
 # Test ti_colors hex codes
 test_that("ti_colors hex codes are correct", {
   expect_equal(ti_colors$dark_text, "#00101A")
@@ -68,25 +64,41 @@ test_that("ti_palettes returns correct color hex codes", {
 
 # Test scale_color_ti function
 test_that("scale_color_ti returns the correct discrete scale", {
-  scale <- scale_color_ti(palette = "default", .colors = ti_colors, .palettes = ti_palettes)
+  scale <- scale_color_ti(
+    palette = "default",
+    .colors = ti_colors,
+    .palettes = ti_palettes
+  )
   expect_s3_class(scale, "ScaleDiscrete")
   expect_true("colour" %in% scale$aesthetics)
   expect_equal(scale$na.value, ti_colors$na_value)
 })
 
 test_that("scale_color_ti reverses palettes correctly", {
-  scale <- scale_color_ti(palette = "default", reverse = TRUE, .colors = ti_colors, .palettes = ti_palettes)
+  scale <- scale_color_ti(
+    palette = "default",
+    reverse = TRUE,
+    .colors = ti_colors,
+    .palettes = ti_palettes
+  )
   expect_equal(scale$scale_name, rev(ti_palettes$default))
 })
 
 
 test_that("scale_color_ti passes additional arguments", {
-  scale <- scale_color_ti(palette = "default", continuous = TRUE, .aesthetic = "color", .colors = ti_colors, .palettes = ti_palettes, guide = "none")
+  scale <- scale_color_ti(
+    palette = "default",
+    continuous = TRUE,
+    .aesthetic = "color",
+    .colors = ti_colors,
+    .palettes = ti_palettes,
+    guide = "none"
+  )
   expect_equal(scale$guide, "none")
 })
 
-# Test scale_fill_ti function by ensuring it calls scale_color_ti with correct params
-test_that("scale_fill_ti returns the correct ggplot2 scale with default parameters", {
+# Test scale_fill_ti function calls scale_color_ti with correct params
+test_that("scale_fill_ti returns correct ggplot2 scale w/ default parameters", {
   scale <- scale_fill_ti()
   expect_s3_class(scale, "ScaleDiscrete")
   expect_equal(scale$aesthetics, "fill")
@@ -95,7 +107,8 @@ test_that("scale_fill_ti returns the correct ggplot2 scale with default paramete
 test_that("scale_fill_ti handles reversing palettes", {
   scale <- scale_fill_ti(palette = "default", reverse = TRUE)
   reversed_palette <- rev(ti_palettes$default)
-  # Assuming scale_color_ti is correct, we test if scale_fill_ti passes the correct arguments to scale_color_ti
+  # Assuming scale_color_ti is correct, we test if scale_fill_ti passes the
+  # correct arguments to scale_color_ti
   expect_equal(scale$scale_name, reversed_palette)
 })
 
@@ -104,6 +117,3 @@ test_that("scale_fill_ti handles continuous scales", {
   scale <- scale_fill_ti(palette = "default", continuous = TRUE)
   expect_s3_class(scale, "ScaleContinuous")
 })
-
-
-
