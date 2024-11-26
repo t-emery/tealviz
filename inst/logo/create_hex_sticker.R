@@ -54,4 +54,4 @@ sticker(subplot = p,
         filename = "inst/logo/tealviz_hex_logo.png",
         dpi = 500)
 
-use_logo("inst/logo/tealviz_hex_logo.png")
+usethis::use_logo("inst/logo/tealviz_hex_logo.png")
