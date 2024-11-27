@@ -126,36 +126,66 @@ font_hoist <- function(family_name, silent = FALSE, check_only = FALSE) {
 }
 
 #' Download and install a Google Font
-#' @description Downloads and installs a font family from Google Fonts to the
-#'   user's system.
-#' @details This function handles the entire process of downloading a font from
-#'   Google Fonts, extracting the files, and installing them in the appropriate
-#'   system directory. It works across Windows, macOS, and Linux systems.
+#' @description Downloads and installs a font family from Google Fonts using the
+#'   official API
 #' @param font_name Character string of the font name (e.g. "Dancing Script")
+#' @param api_key Google Fonts API key. Defaults to a hard-coded key that
+#'   has very generous usage limits. If you need your own key, you can get one
+#'   from the Google Cloud Console.
 #' @return Logical indicating whether the font was successfully installed
-#' @examples
-#' \dontrun{
-#' install_google_font("Roboto")
-#' install_google_font("Dancing Script")
-#' }
-install_google_font <- function(font_name) {
-  # Sanitize font name for URL
-  url_font_name <- gsub(" ", "+", font_name)
-  download_url <- sprintf(
-    "https://fonts.google.com/download?family=%s",
-    url_font_name
+install_google_font <- function(
+  font_name,
+  api_key = "AIzaSyDOr3jWLtl4IP08yNaddV61_40f0YByPHo"
+) {
+  # Fetch font information from API
+  api_url <- sprintf(
+    "https://www.googleapis.com/webfonts/v1/webfonts?key=%s",
+    api_key
   )
 
-  # Create temporary directory for download and extraction
+  response <- try({
+    jsonlite::fromJSON(api_url)
+  }, silent = TRUE)
+
+  if (inherits(response, "try-error")) {
+    message("Failed to fetch font list from Google Fonts API")
+    return(FALSE)
+  }
+
+  # Find the requested font
+  font_info <- response$items[response$items$family == font_name, ]
+  if (nrow(font_info) == 0) {
+    message("Font '", font_name, "' not found in Google Fonts")
+    return(FALSE)
+  }
+
+  # Create temporary directory for downloads
   temp_dir <- tempdir()
-  zip_path <- file.path(temp_dir, paste0(gsub(" ", "_", font_name), ".zip"))
+  font_files <- c()
 
-  # Download and extract
-  if (!download_font(download_url, zip_path)) return(FALSE)
-  font_files <- extract_font_files(zip_path, temp_dir)
-  if (length(font_files) == 0) return(FALSE)
+  # Download each variant
+  for (variant in names(font_info$files)) {
+    url <- font_info$files[[variant]]
+    file_ext <- if(grepl("\\.ttf$", url)) ".ttf" else ".otf"
+    dest_path <- file.path(temp_dir, paste0(
+      gsub(" ", "_", font_name),
+      "_",
+      variant,
+      file_ext
+    ))
 
-  # Install based on OS
+    message("Downloading variant: ", variant)
+    if (download_font(url, dest_path)) {
+      font_files <- c(font_files, dest_path)
+    }
+  }
+
+  if (length(font_files) == 0) {
+    message("No font files were successfully downloaded")
+    return(FALSE)
+  }
+
+  # Install the downloaded files
   success <- install_font_files(font_files)
 
   # Cleanup
@@ -164,19 +194,25 @@ install_google_font <- function(font_name) {
   return(success)
 }
 
-#' Download font from Google Fonts
-#' @description Downloads a font zip file from a Google Fonts URL
-#' @param url The complete download URL for the font
-#' @param dest_path File path where the downloaded zip file should be saved
+#' Download font file
+#' @description Downloads a font file from a direct URL
+#' @param url The direct download URL for the font file
+#' @param dest_path File path where the font file should be saved
 #' @return Logical indicating whether the download was successful
 #' @keywords internal
 download_font <- function(url, dest_path) {
-  # Let download.file handle its own warnings
-  result <- try(
-    utils::download.file(url, dest_path, mode = "wb", quiet = TRUE),
-    silent = TRUE
-  )
-  return(!inherits(result, "try-error"))
+  message("Downloading from: ", url)
+
+  result <- try({
+    utils::download.file(url, dest_path, mode = "wb", quiet = TRUE)
+  }, silent = TRUE)
+
+  if (inherits(result, "try-error")) {
+    message("Download failed: ", attr(result, "condition")$message)
+    return(FALSE)
+  }
+
+  return(file.exists(dest_path) && file.size(dest_path) > 0)
 }
 
 #' Extract font files from zip archive
@@ -188,11 +224,29 @@ download_font <- function(url, dest_path) {
 #' @return Character vector of full paths to the extracted font files
 #' @keywords internal
 extract_font_files <- function(zip_path, extract_dir) {
-  # Check if file exists and is a valid zip file
-  if (!file.exists(zip_path) || file.size(zip_path) == 0) {
-    warning("Downloaded file is empty or does not exist")
+  # Add debug messages
+  message("Checking zip file at: ", zip_path)
+
+  if (!file.exists(zip_path)) {
+    warning("Zip file does not exist")
     return(character(0))
   }
+
+  if (file.size(zip_path) == 0) {
+    warning("Zip file is empty")
+    return(character(0))
+  }
+
+  # Try to list contents before extracting
+  zip_contents <- try(utils::unzip(zip_path, list = TRUE), silent = TRUE)
+  if (inherits(zip_contents, "try-error")) {
+    warning("Invalid zip file format")
+    return(character(0))
+  }
+
+  message(
+    "Zip contents: ", paste(utils::head(zip_contents$Name), collapse = ", ")
+  )
 
   # Attempt to unzip with error handling
   result <- tryCatch({
