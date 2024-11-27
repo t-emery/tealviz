@@ -125,6 +125,11 @@ font_hoist <- function(family_name, silent = FALSE, check_only = FALSE) {
   return(invisible(font_specs))
 }
 
+# Create a mockable version of jsonlite::fromJSON
+get_from_json <- function(...) {
+  jsonlite::fromJSON(...)
+}
+
 #' Download and install a Google Font
 #' @description Downloads and installs a font family from Google Fonts using the
 #'   official API
@@ -137,27 +142,31 @@ install_google_font <- function(
   font_name,
   api_key = "AIzaSyDOr3jWLtl4IP08yNaddV61_40f0YByPHo"
 ) {
-  # Fetch font information from API
+  # Fetch font information from API for specific font
   api_url <- sprintf(
-    "https://www.googleapis.com/webfonts/v1/webfonts?key=%s",
-    api_key
+    "https://www.googleapis.com/webfonts/v1/webfonts?key=%s&family=%s",
+    api_key,
+    # Replace spaces with + for Google Fonts API format
+    gsub(" ", "+", font_name)
   )
 
   response <- try({
-    jsonlite::fromJSON(api_url)
+    get_from_json(api_url)
   }, silent = TRUE)
 
   if (inherits(response, "try-error")) {
-    message("Failed to fetch font list from Google Fonts API")
+    message("Failed to fetch font information from Google Fonts API")
     return(FALSE)
   }
 
-  # Find the requested font
-  font_info <- response$items[response$items$family == font_name, ]
-  if (nrow(font_info) == 0) {
+  # Check if any fonts were returned
+  if (length(response$items) == 0) {
     message("Font '", font_name, "' not found in Google Fonts")
     return(FALSE)
   }
+
+  # Use the first (and should be only) item
+  font_info <- response$items[1, ]
 
   # Create temporary directory for downloads
   temp_dir <- tempdir()

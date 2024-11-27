@@ -8,5 +8,6 @@ globalVariables(c(
   "path",
   "family",
   "style",
-  "ti_colors"
+  "ti_colors",
+  "get_from_json"
 ))

@@ -25,7 +25,7 @@ test_that("download_font handles successful and failed downloads", {
   test_path <- file.path(temp_dir, "test_font.zip")
 
   # Test successful download with Google Fonts URL
-  real_url <- "https://fonts.google.com/download?family=Roboto"
+  real_url <- "http://fonts.gstatic.com/s/googlesans/v58/4Ua_rENHsxJlGDuGo1OIlJfC6l_24rlCK1Yo_Iqcsih3SAyH6cAwhX9RFD48TE63OOYKtrwEIJllpyw.ttf" # nolint
   expect_true(download_font(real_url, test_path))
   expect_true(file.exists(test_path))
 
@@ -231,35 +231,40 @@ test_that("install_font_files handles font installation correctly", {
 })
 
 test_that("install_google_font handles full font installation process", {
-  # Create temporary test environment
-  temp_dir <- tempdir()
+  # Create mock API response matching actual Google Fonts API structure
+  mock_api_response <- readRDS(
+    test_path("fixtures", "google_fonts_response.rds")
+  )
 
   # Mock all dependent functions
   local_mocked_bindings(
-    download_font = function(url, dest_path) {
-      # Verify URL formatting
-      expect_equal(
+    # Mock API call
+    get_from_json = function(url) {
+      expect_match(
         url,
-        "https://fonts.google.com/download?family=Roboto+Condensed"
+        "^https://www.googleapis.com/webfonts/v1/webfonts\\?key=.*&family=Roboto\\+Condensed$" # nolint
       )
-      expect_equal(basename(dest_path), "Roboto_Condensed.zip")
+      mock_api_response
+    },
+    # Mock download function
+    download_font = function(url, dest_path) {
+      # Verify URL and destination path format
+      expect_match(
+        url,
+        "^https://fonts.gstatic.com/s/robotocondensed/v25/.*\\.ttf$"
+      )
+      expect_match(
+        dest_path,
+        "Roboto_Condensed_.*\\.(ttf|otf)$"
+      )
       # Simulate successful download
-      writeLines("mock zip data", dest_path)
+      writeLines("mock font data", dest_path)
       TRUE
     },
-    extract_font_files = function(zip_path, extract_dir) {
-      # Verify zip path
-      expect_true(file.exists(zip_path))
-      # Return mock font paths
-      c(
-        file.path(extract_dir, "RobotoCondensed-Regular.ttf"),
-        file.path(extract_dir, "RobotoCondensed-Bold.ttf")
-      )
-    },
+    # Mock font installation
     install_font_files = function(font_files) {
-      # Verify we got the expected font files
       expect_length(font_files, 2)
-      expect_true(all(grepl("RobotoCondensed-.*\\.ttf$", font_files)))
+      expect_true(all(file.exists(font_files)))
       TRUE
     }
   )
@@ -267,25 +272,31 @@ test_that("install_google_font handles full font installation process", {
   # Test successful installation
   expect_true(install_google_font("Roboto Condensed"))
 
-  # Test with failed download
+  # Test with failed API response
   local_mocked_bindings(
-    download_font = function(url, dest_path) FALSE
+    get_from_json = function(url) stop("API error")
   )
   expect_false(install_google_font("Roboto Condensed"))
 
-  # Test with failed extraction
+  # Test with font not found in API response
   local_mocked_bindings(
-    download_font = function(url, dest_path) TRUE,
-    extract_font_files = function(zip_path, extract_dir) character(0)
+    get_from_json = function(url) {
+      list(kind = "webfonts#webfontList", items = data.frame())
+    }
+  )
+  expect_false(install_google_font("Roboto Condensed"))
+
+  # Test with failed downloads
+  local_mocked_bindings(
+    get_from_json = function(url) mock_api_response,
+    download_font = function(url, dest_path) FALSE
   )
   expect_false(install_google_font("Roboto Condensed"))
 
   # Test with failed installation
   local_mocked_bindings(
+    get_from_json = function(url) mock_api_response,
     download_font = function(url, dest_path) TRUE,
-    extract_font_files = function(zip_path, extract_dir) {
-      c(file.path(extract_dir, "font.ttf"))
-    },
     install_font_files = function(font_files) FALSE
   )
   expect_false(install_google_font("Roboto Condensed"))
