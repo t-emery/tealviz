@@ -136,3 +136,157 @@ test_that("copy_font_files handles file copying correctly", {
   # Cleanup
   unlink(temp_src, recursive = TRUE)
 })
+
+test_that("get_font_directory returns correct paths for each OS", {
+  # Test Windows path
+  withr::local_envvar(LOCALAPPDATA = "C:/Users/test/AppData/Local")
+  expect_equal(
+    get_font_directory("windows"),
+    "C:/Users/test/AppData/Local/Microsoft/Windows/Fonts"
+  )
+
+  # Test macOS path
+  withr::local_dir(tempdir())  # Temporarily change working directory
+  expect_equal(
+    get_font_directory("macos"),
+    file.path(path.expand("~"), "Library", "Fonts")
+  )
+
+  # Test Linux path
+  expect_equal(
+    get_font_directory("linux"),
+    file.path(path.expand("~"), ".local", "share", "fonts")
+  )
+
+  # Test invalid OS
+  expect_error(
+    get_font_directory("invalid"),
+    "Unsupported operating system"
+  )
+})
+
+# TODO: Enhance this test to check for the actual cache refresh behavior
+test_that("refresh_font_cache handles different OS behaviors correctly", {
+  # Mock our wrapper functions instead of system/system2
+  local_mocked_bindings(
+    run_system_command = function(...) TRUE,
+    run_system2_command = function(...) TRUE
+  )
+
+  # Test Linux font cache refresh
+  expect_true(refresh_font_cache("linux"))
+
+  # Test Windows font cache refresh
+  expect_true(refresh_font_cache("windows"))
+
+  # Test macOS (should return TRUE without doing anything)
+  expect_true(refresh_font_cache("macos"))
+
+  # Test with failed system calls
+  local_mocked_bindings(
+    run_system_command = function(...) stop("Command failed"),
+    run_system2_command = function(...) stop("Command failed")
+  )
+
+  # Should still return TRUE even if commands fail
+  # (we don't want font installation to fail just because cache refresh failed)
+  expect_true(refresh_font_cache("linux"))
+  expect_true(refresh_font_cache("windows"))
+})
+
+test_that("install_font_files handles font installation correctly", {
+  # Create temporary test environment
+  temp_src <- tempdir()
+  test_fonts <- c("test1.ttf", "test2.otf")
+  font_paths <- file.path(temp_src, test_fonts)
+
+  # Create mock font files
+  writeLines("mock font 1", font_paths[1])
+  writeLines("mock font 2", font_paths[2])
+
+  # Mock the dependent functions
+  local_mocked_bindings(
+    get_os = function() "linux",
+    get_font_directory = function(os) file.path(temp_src, "fonts"),
+    refresh_font_cache = function(os) TRUE
+  )
+
+  # Test when font directory doesn't exist
+  expect_true(install_font_files(font_paths))
+  expect_true(dir.exists(file.path(temp_src, "fonts")))
+
+  # Verify files were copied
+  expect_true(file.exists(file.path(temp_src, "fonts", "test1.ttf")))
+  expect_true(file.exists(file.path(temp_src, "fonts", "test2.otf")))
+
+  # Test with non-existent source files
+  nonexistent_paths <- c(
+    file.path(temp_src, "nonexistent1.ttf"),
+    file.path(temp_src, "nonexistent2.otf")
+  )
+  expect_false(install_font_files(nonexistent_paths))
+
+  # Cleanup
+  unlink(temp_src, recursive = TRUE)
+})
+
+test_that("install_google_font handles full font installation process", {
+  # Create temporary test environment
+  temp_dir <- tempdir()
+
+  # Mock all dependent functions
+  local_mocked_bindings(
+    download_font = function(url, dest_path) {
+      # Verify URL formatting
+      expect_equal(
+        url,
+        "https://fonts.google.com/download?family=Roboto+Condensed"
+      )
+      expect_equal(basename(dest_path), "Roboto_Condensed.zip")
+      # Simulate successful download
+      writeLines("mock zip data", dest_path)
+      TRUE
+    },
+    extract_font_files = function(zip_path, extract_dir) {
+      # Verify zip path
+      expect_true(file.exists(zip_path))
+      # Return mock font paths
+      c(
+        file.path(extract_dir, "RobotoCondensed-Regular.ttf"),
+        file.path(extract_dir, "RobotoCondensed-Bold.ttf")
+      )
+    },
+    install_font_files = function(font_files) {
+      # Verify we got the expected font files
+      expect_length(font_files, 2)
+      expect_true(all(grepl("RobotoCondensed-.*\\.ttf$", font_files)))
+      TRUE
+    }
+  )
+
+  # Test successful installation
+  expect_true(install_google_font("Roboto Condensed"))
+
+  # Test with failed download
+  local_mocked_bindings(
+    download_font = function(url, dest_path) FALSE
+  )
+  expect_false(install_google_font("Roboto Condensed"))
+
+  # Test with failed extraction
+  local_mocked_bindings(
+    download_font = function(url, dest_path) TRUE,
+    extract_font_files = function(zip_path, extract_dir) character(0)
+  )
+  expect_false(install_google_font("Roboto Condensed"))
+
+  # Test with failed installation
+  local_mocked_bindings(
+    download_font = function(url, dest_path) TRUE,
+    extract_font_files = function(zip_path, extract_dir) {
+      c(file.path(extract_dir, "font.ttf"))
+    },
+    install_font_files = function(font_files) FALSE
+  )
+  expect_false(install_google_font("Roboto Condensed"))
+})

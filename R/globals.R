@@ -8,7 +8,5 @@ globalVariables(c(
   "path",
   "family",
   "style",
-  "ti_colors",
-  ".Platform",
-  "Sys.info"
+  "ti_colors"
 ))

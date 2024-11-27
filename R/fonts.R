@@ -188,7 +188,25 @@ download_font <- function(url, dest_path) {
 #' @return Character vector of full paths to the extracted font files
 #' @keywords internal
 extract_font_files <- function(zip_path, extract_dir) {
-  utils::unzip(zip_path, exdir = extract_dir)
+  # Check if file exists and is a valid zip file
+  if (!file.exists(zip_path) || file.size(zip_path) == 0) {
+    warning("Downloaded file is empty or does not exist")
+    return(character(0))
+  }
+
+  # Attempt to unzip with error handling
+  result <- tryCatch({
+    utils::unzip(zip_path, exdir = extract_dir)
+    TRUE
+  }, error = function(e) {
+    warning("Failed to extract zip file: ", e$message)
+    FALSE
+  })
+
+  if (!result) {
+    return(character(0))
+  }
+
   # Find all font files recursively
   font_files <- list.files(
     extract_dir,
@@ -307,6 +325,10 @@ copy_font_files <- function(font_files, dest_dir) {
   return(success)
 }
 
+# Create mockable versions of system calls
+run_system_command <- function(...) system(...)
+run_system2_command <- function(...) system2(...)
+
 #' Refresh system font cache if needed
 #' @description Updates the system's font cache after installing new fonts
 #' @details On Linux, runs `fc-cache`. On Windows, uses PowerShell to register
@@ -317,7 +339,16 @@ copy_font_files <- function(font_files, dest_dir) {
 refresh_font_cache <- function(os) {
   if (os == "linux") {
     # Run fc-cache on Linux
-    system("fc-cache -f -v", ignore.stdout = TRUE, ignore.stderr = TRUE)
+    tryCatch({
+      run_system_command(
+        "fc-cache -f -v",
+        ignore.stdout = TRUE,
+        ignore.stderr = TRUE
+      )
+    }, error = function(e) {
+      # Silently continue if command fails
+      TRUE
+    })
   } else if (os == "windows") {
     # PowerShell command to register fonts
     ps_cmd <- paste(
@@ -327,12 +358,17 @@ refresh_font_cache <- function(os) {
       "ForEach-Object {Add-Type -AssemblyName PresentationCore;",
       "[System.Windows.Media.Fonts]::GetFontFamilies($_.FullName)}"
     )
-    system2(
-      "powershell",
-      args = c("-Command", ps_cmd),
-      stdout = TRUE,
-      stderr = TRUE
-    )
+    tryCatch({
+      run_system2_command(
+        "powershell",
+        args = c("-Command", ps_cmd),
+        stdout = TRUE,
+        stderr = TRUE
+      )
+    }, error = function(e) {
+      # Silently continue if command fails
+      TRUE
+    })
   }
   # macOS doesn't need cache refresh
   return(TRUE)
