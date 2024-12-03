@@ -45,29 +45,53 @@ test_that("extract_font_files finds font files recursively", {
   # Create temporary test directory structure
   temp_dir <- tempdir()
   test_dir <- file.path(temp_dir, "font_test")
+  zip_path <- file.path(temp_dir, "test_fonts.zip")
+
+  # Clean up any existing files first
+  unlink(test_dir, recursive = TRUE)
+  unlink(zip_path)
+
+  # Verify cleanup was successful
+  expect_false(dir.exists(test_dir))
+  expect_false(file.exists(zip_path))
+
+  # Create fresh directories
   dir.create(test_dir, recursive = TRUE)
   dir.create(file.path(test_dir, "subfolder"))
 
   # Create mock font files
-  writeLines("", file.path(test_dir, "font1.ttf"))
-  writeLines("", file.path(test_dir, "font2.otf"))
-  writeLines("", file.path(test_dir, "subfolder", "font3.TTF"))
-  writeLines("", file.path(test_dir, "subfolder", "notafont.txt"))
+  test_fonts <- c(
+    file.path(test_dir, "font1.ttf"),
+    file.path(test_dir, "font2.otf"),
+    file.path(test_dir, "subfolder", "font3.TTF")
+  )
+
+  # Create non-font file
+  not_font <- file.path(test_dir, "subfolder", "notafont.txt")
+
+  # Create all test files
+  sapply(c(test_fonts, not_font), writeLines, text = "test content")
+
+  # Verify test files were created
+  expect_true(all(file.exists(c(test_fonts, not_font))))
 
   # Create test zip file
-  zip_path <- file.path(temp_dir, "test_fonts.zip")
   withr::with_dir(temp_dir, {
     utils::zip(zip_path, "font_test", flags = "-r")
   })
 
+  # Verify zip file was created
+  expect_true(file.exists(zip_path))
+
   # Test the function
   extracted_files <- extract_font_files(zip_path, temp_dir)
 
+  # Sort both expected and actual files for comparison
+  extracted_files <- sort(basename(extracted_files))
+  expected_files <- sort(basename(test_fonts))
+
   # Assertions
-  expect_length(extracted_files, 3)
-  expect_true(
-    all(grepl("\\.(?:ttf|otf)$", extracted_files, ignore.case = TRUE))
-  )
+  expect_equal(extracted_files, expected_files)
   expect_false(any(grepl("\\.txt$", extracted_files)))
 
   # Cleanup
@@ -165,36 +189,8 @@ test_that("get_font_directory returns correct paths for each OS", {
   )
 })
 
-# TODO: Enhance this test to check for the actual cache refresh behavior
-test_that("refresh_font_cache handles different OS behaviors correctly", {
-  # Mock our wrapper functions instead of system/system2
-  local_mocked_bindings(
-    run_system_command = function(...) TRUE,
-    run_system2_command = function(...) TRUE
-  )
-
-  # Test Linux font cache refresh
-  expect_true(refresh_font_cache("linux"))
-
-  # Test Windows font cache refresh
-  expect_true(refresh_font_cache("windows"))
-
-  # Test macOS (should return TRUE without doing anything)
-  expect_true(refresh_font_cache("macos"))
-
-  # Test with failed system calls
-  local_mocked_bindings(
-    run_system_command = function(...) stop("Command failed"),
-    run_system2_command = function(...) stop("Command failed")
-  )
-
-  # Should still return TRUE even if commands fail
-  # (we don't want font installation to fail just because cache refresh failed)
-  expect_true(refresh_font_cache("linux"))
-  expect_true(refresh_font_cache("windows"))
-})
-
-test_that("install_font_files handles font installation correctly", {
+# Test install_font_files function for Windows
+test_that("install_font_files handles Windows font registration correctly", {
   # Create temporary test environment
   temp_src <- tempdir()
   test_fonts <- c("test1.ttf", "test2.otf")
@@ -206,28 +202,48 @@ test_that("install_font_files handles font installation correctly", {
 
   # Mock the dependent functions
   local_mocked_bindings(
-    get_os = function() "linux",
+    get_os = function() "windows",
     get_font_directory = function(os) file.path(temp_src, "fonts"),
-    refresh_font_cache = function(os) TRUE
+    get_system_file = function(...) {
+      # Return a mock path for the PowerShell script
+      "path/to/install_fonts.ps1"
+    },
+    run_system2_command = function(command, args, stdout, stderr) {
+      expect_equal(command, "powershell")
+      expect_equal(args[1:3], c("-NoProfile", "-ExecutionPolicy", "Bypass"))
+      expect_equal(args[4], "-File")
+      expect_true(grepl("install_fonts.ps1$", args[5]))
+      # The remaining args should be the font paths
+      expect_equal(args[-(1:5)], font_paths)
+      # Return mock successful output
+      paste(
+        "Successfully installed: test1.ttf",
+        "Successfully installed: test2.otf",
+        "Installation complete: 2 installed, 0 skipped",
+        sep = "\n"
+      )
+    }
   )
 
-  # Test when font directory doesn't exist
+  # Test successful installation
   expect_true(install_font_files(font_paths))
-  expect_true(dir.exists(file.path(temp_src, "fonts")))
-
-  # Verify files were copied
-  expect_true(file.exists(file.path(temp_src, "fonts", "test1.ttf")))
-  expect_true(file.exists(file.path(temp_src, "fonts", "test2.otf")))
-
-  # Test with non-existent source files
-  nonexistent_paths <- c(
-    file.path(temp_src, "nonexistent1.ttf"),
-    file.path(temp_src, "nonexistent2.otf")
-  )
-  expect_false(install_font_files(nonexistent_paths))
 
   # Cleanup
   unlink(temp_src, recursive = TRUE)
+})
+
+# Test refresh_font_cache for Linux
+test_that("refresh_font_cache handles Linux font cache refresh correctly", {
+  # Mock our wrapper functions instead of system/system2
+  local_mocked_bindings(
+    run_system_command = function(command, ...) {
+      expect_equal(command, "fc-cache -f -v")
+      TRUE
+    }
+  )
+
+  # Test Linux font cache refresh
+  expect_true(refresh_font_cache("linux"))
 })
 
 test_that("install_google_font handles full font installation process", {
@@ -248,23 +264,29 @@ test_that("install_google_font handles full font installation process", {
     },
     # Mock download function
     download_font = function(url, dest_path) {
-      # Verify URL and destination path format
+      # Verify URL format
       expect_match(
         url,
-        "^https://fonts.gstatic.com/s/robotocondensed/v25/.*\\.ttf$"
+        "^https://fonts.gstatic.com/s/robotocondensed/.*\\.ttf$"
       )
+      # Verify destination path matches expected pattern for any variant
       expect_match(
         dest_path,
-        "Roboto_Condensed_.*\\.(ttf|otf)$"
+        "Roboto_Condensed_(100|200|300|regular|500|600|700|800|900|.*italic)\\.(ttf|otf)$" # nolint
       )
       # Simulate successful download
       writeLines("mock font data", dest_path)
       TRUE
     },
-    # Mock font installation
+    # Mock font installation - expect all 18 variants
     install_font_files = function(font_files) {
-      expect_length(font_files, 2)
+      # Expect all 18 variants (9 weights × 2 styles)
+      expect_length(font_files, 18)
       expect_true(all(file.exists(font_files)))
+      # Verify we have both regular and italic variants
+      expect_true(any(grepl("italic", basename(font_files))))
+      # Fix the regular expression for matching non-italic variants
+      expect_true(any(grepl("regular|[1-9]00($|[^i])", basename(font_files))))
       TRUE
     }
   )

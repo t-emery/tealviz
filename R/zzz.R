@@ -63,13 +63,12 @@
         packageStartupMessage("\nAttempting to install fonts...")
 
         results <- lapply(pkgenv$missing_fonts, function(font) {
-          success <- try(install_google_font(font), silent = TRUE)
-          if (inherits(success, "try-error") || !success) {
-            packageStartupMessage(sprintf("Failed to install '%s'", font))
-            FALSE
-          } else {
+          if (install_google_font(font)) {
             packageStartupMessage(sprintf("Successfully installed '%s'", font))
             TRUE
+          } else {
+            packageStartupMessage(sprintf("Failed to install '%s'", font))
+            FALSE
           }
         })
 

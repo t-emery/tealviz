@@ -172,10 +172,15 @@ install_google_font <- function(
   temp_dir <- tempdir()
   font_files <- c()
 
+  # Ensure the temporary directory exists
+  if (!dir.exists(temp_dir)) {
+    dir.create(temp_dir, recursive = TRUE)
+  }
+
   # Download each variant
   for (variant in names(font_info$files)) {
     url <- font_info$files[[variant]]
-    file_ext <- if(grepl("\\.ttf$", url)) ".ttf" else ".otf"
+    file_ext <- if (grepl("\\.ttf$", url)) ".ttf" else ".otf"
     dest_path <- file.path(temp_dir, paste0(
       gsub(" ", "_", font_name),
       "_",
@@ -281,12 +286,17 @@ extract_font_files <- function(zip_path, extract_dir) {
   return(font_files)
 }
 
+# Create mockable version of system.file
+get_system_file <- function(...) {
+  system.file(...)
+}
+
 #' Install font files to appropriate system directory
-#' @description Copies font files to the system's font directory and refreshes
-#'   the font cache
+#' @description Copies font files to the system's font directory and registers
+#'   them
 #' @details Determines the correct font directory based on the operating system,
-#'   creates it if necessary, copies the font files, and triggers a
-#'   system-specific font cache refresh when required.
+#'   creates it if necessary, copies the font files, and triggers system-
+#'   specific font registration when required.
 #' @param font_files Character vector of paths to the font files to install
 #' @return Logical indicating whether all files were successfully installed
 #' @keywords internal
@@ -294,19 +304,85 @@ install_font_files <- function(font_files) {
   os <- get_os()
   font_dir <- get_font_directory(os)
 
+  message("Installing fonts to: ", font_dir)
+
   if (!dir.exists(font_dir)) {
     dir.create(font_dir, recursive = TRUE)
   }
 
-  # Copy files to font directory
-  success <- copy_font_files(font_files, font_dir)
+  if (os == "windows") {
+    # Get path to the PowerShell script in the package
+    ps_script_path <- get_system_file(
+      "scripts", "install_fonts.ps1", package = "tealviz"
+    )
+    if (ps_script_path == "") {
+      stop("PowerShell script not found in package")
+    }
 
-  # Refresh font cache if needed
-  if (success) {
-    refresh_font_cache(os)
+    # Execute PowerShell with output capture
+    message("Executing PowerShell script with elevated privileges...")
+    output <- run_system2_command(
+      "powershell",
+      c(
+        "-NoProfile",
+        "-ExecutionPolicy", "Bypass",
+        "-File", ps_script_path,
+        font_files  # Pass font files as arguments to the script
+      ),
+      stdout = TRUE,
+      stderr = TRUE
+    )
+
+    # Display captured output
+    if (length(output) > 0) {
+      message("PowerShell Output:")
+      message(paste(output, collapse = "\n"))
+    }
+
+    # Consider installation successful if any fonts were installed
+    success <- any(
+      grepl("Successfully installed:|Partial installation", output)
+    )
+    if (!success) {
+      # Also check for completion message as backup
+      success <- any(
+        grepl("Installation complete: [1-9]\\d* installed", output)
+      )
+    }
+
+    if (!success) {
+      message("No fonts were successfully installed.")
+    }
+
+    return(success)
+  } else {
+    # Non-Windows code remains the same...
+    success <- copy_font_files(font_files, font_dir)
+
+    if (success && os == "linux") {
+      refresh_font_cache(os)
+    }
+
+    Sys.sleep(2)
+    installed_fonts <- systemfonts::system_fonts()
+    font_names <- basename(font_files) |>
+      tools::file_path_sans_ext()
+
+    fonts_found <- any(sapply(font_names, function(name) {
+      any(grepl(name, installed_fonts$family, ignore.case = TRUE))
+    }))
+
+    if (!fonts_found) {
+      message(
+        paste0(
+          "Warning: Fonts were copied but may not be properly registered. ",
+          "Try restarting R or your system."
+        )
+      )
+    }
+
+    return(fonts_found)
   }
-
-  return(success)
 }
 
 # Create mockable versions of .Platform and Sys.info
@@ -325,7 +401,7 @@ get_sysinfo <- function() Sys.info()
 #'   "macos" for macOS,
 #'   "linux" for Linux.
 #' @export
-#' 
+#'
 #' @examples
 #' # Get the current operating system
 #' os_type <- get_os()
@@ -390,12 +466,14 @@ copy_font_files <- function(font_files, dest_dir) {
 
 # Create mockable versions of system calls
 run_system_command <- function(...) system(...)
-run_system2_command <- function(...) system2(...)
+run_system2_command <- function(command, args, ...) {
+  output <- system2(command, args, stdout = TRUE, stderr = TRUE)
+  return(output)
+}
 
 #' Refresh system font cache if needed
 #' @description Updates the system's font cache after installing new fonts
-#' @details On Linux, runs `fc-cache`. On Windows, uses PowerShell to register
-#'   fonts. No action needed for macOS.
+#' @details On Linux, runs `fc-cache`. No action needed for Windows or macOS.
 #' @param os Operating system identifier ("windows", "macos", or "linux")
 #' @return Logical indicating whether the cache refresh was successful
 #' @keywords internal
@@ -412,27 +490,7 @@ refresh_font_cache <- function(os) {
       # Silently continue if command fails
       TRUE
     })
-  } else if (os == "windows") {
-    # PowerShell command to register fonts
-    ps_cmd <- paste(
-      "Get-ChildItem -Path",
-      shQuote(get_font_directory("windows")),
-      "-Include ('*.ttf','*.otf') -Recurse |",
-      "ForEach-Object {Add-Type -AssemblyName PresentationCore;",
-      "[System.Windows.Media.Fonts]::GetFontFamilies($_.FullName)}"
-    )
-    tryCatch({
-      run_system2_command(
-        "powershell",
-        args = c("-Command", ps_cmd),
-        stdout = TRUE,
-        stderr = TRUE
-      )
-    }, error = function(e) {
-      # Silently continue if command fails
-      TRUE
-    })
   }
-  # macOS doesn't need cache refresh
+  # macOS and Windows don't need cache refresh
   return(TRUE)
 }
