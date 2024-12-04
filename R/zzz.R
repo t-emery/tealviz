@@ -50,10 +50,9 @@
   if (length(pkgenv$missing_fonts) > 0) {
     missing_fonts_msg <- paste(pkgenv$missing_fonts, collapse = ", ")
 
-    msg <- sprintf(
-      "Note: Missing required fonts: %s\n\n",
-      "Would you like to install them from Google Fonts? (y/n): ",
-      missing_fonts_msg
+    msg <- paste0(
+      sprintf("Note: Missing required fonts: %s\n", missing_fonts_msg),
+      "Would you like to install them from Google Fonts? (y/n): "
     )
 
     # Only prompt if in interactive mode
