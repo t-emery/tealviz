@@ -39,40 +39,58 @@ ti_colors <- list(
 #'
 #' @export
 ti_palettes <- list(
-  default = c(ti_colors$dark_teal,
-              ti_colors$teal,
-              ti_colors$muted_gold,
-              ti_colors$dark_orange),
-  teal_to_gold = c(ti_colors$dark_teal,
-                   ti_colors$teal,
-                   ti_colors$gold),
-  teal_to_crimson = c(ti_colors$mid_teal,
-                      ti_colors$muted_gold,
-                      ti_colors$orange,
-                      ti_colors$crimson),
-  cool_colors = c(ti_colors$dark_teal,
-                  ti_colors$teal,
-                  ti_colors$mint),
-  warm_colors = c(ti_colors$muted_gold,
-                  ti_colors$orange,
-                  ti_colors$crimson),
-  skip_gold = c(ti_colors$dark_teal,
-                ti_colors$teal,
-                ti_colors$mint,
-                ti_colors$orange,
-                ti_colors$dark_orange),
-  neg_to_pos = c(ti_colors$negative,
-                 ti_colors$pos_neg_neutral,
-                 ti_colors$positive),
-  us_rep_to_dem = c(ti_colors$republican,
-                    ti_colors$rep_dem_neutral,
-                    ti_colors$democrat),
-  divergent = c(ti_colors$dark_teal,
-                ti_colors$teal,
-                ti_colors$mint,
-                ti_colors$muted_gold,
-                ti_colors$dark_orange,
-                ti_colors$crimson)
+  default = c(
+    ti_colors$dark_teal,
+    ti_colors$teal,
+    ti_colors$muted_gold,
+    ti_colors$dark_orange
+  ),
+  teal_to_gold = c(
+    ti_colors$dark_teal,
+    ti_colors$teal,
+    ti_colors$gold
+  ),
+  teal_to_crimson = c(
+    ti_colors$mid_teal,
+    ti_colors$muted_gold,
+    ti_colors$orange,
+    ti_colors$crimson
+  ),
+  cool_colors = c(
+    ti_colors$dark_teal,
+    ti_colors$teal,
+    ti_colors$mint
+  ),
+  warm_colors = c(
+    ti_colors$muted_gold,
+    ti_colors$orange,
+    ti_colors$crimson
+  ),
+  skip_gold = c(
+    ti_colors$dark_teal,
+    ti_colors$teal,
+    ti_colors$mint,
+    ti_colors$orange,
+    ti_colors$dark_orange
+  ),
+  neg_to_pos = c(
+    ti_colors$negative,
+    ti_colors$pos_neg_neutral,
+    ti_colors$positive
+  ),
+  us_rep_to_dem = c(
+    ti_colors$republican,
+    ti_colors$rep_dem_neutral,
+    ti_colors$democrat
+  ),
+  divergent = c(
+    ti_colors$dark_teal,
+    ti_colors$teal,
+    ti_colors$mint,
+    ti_colors$muted_gold,
+    ti_colors$dark_orange,
+    ti_colors$crimson
+  )
 )
 
 #' Applying the color palettes to the `color` aesthetic within the plots
