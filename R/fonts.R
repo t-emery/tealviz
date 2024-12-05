@@ -356,7 +356,6 @@ install_font_files <- function(font_files) {
 
     return(success)
   } else {
-    # Non-Windows code remains the same...
     success <- copy_font_files(font_files, font_dir)
 
     if (success && os == "linux") {
