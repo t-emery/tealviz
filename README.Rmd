@@ -9,7 +9,9 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
-  out.width = "100%"
+  out.width = "100%",
+  dev = "ragg_png",
+  dpi = 300
 )
 ```
 
@@ -40,7 +42,7 @@ Fonts are tricky in R. If you're having trouble, read this [excellent explainer 
 
 The core of the `tealviz` package is a series of `ggplot2` custom themes, and custom colors/palettes.  
 
-```{r example}
+```{r example, message=FALSE, warning=FALSE}
 library(tealviz)
 # On loading the package, the `font_hoist()` function automatically makes sure the fonts are available for use. You will see messages in the console to inform you whether the fonts loaded correctly or not. 
 library(ggplot2)
@@ -61,10 +63,7 @@ palmerpenguins::penguins |>
        caption = "Demo plot, built with {palmerpenguins}") +
   guides(size = "none") +
   scale_fill_ti(continuous = TRUE) +
-  theme_ti(title_font = "Roboto Condensed Bold",
-           base_font = "Roboto Condensed",
-           background_color = TRUE,
-           void = FALSE) 
+  theme_ti() 
 ```
 
 

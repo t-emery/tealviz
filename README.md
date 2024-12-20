@@ -54,14 +54,8 @@ themes, and custom colors/palettes.
 
 ``` r
 library(tealviz)
-#> [32mSuccessfully hoisted 6 font(s) for the family 'Roboto': Roboto Bold, Roboto Italic, Roboto Bold Italic, Roboto Regular, Roboto Regular, Roboto Bold[0m
-#> [32mThe following font(s) for the family 'Roboto' are already loaded: Roboto Medium[0m
-#> [32mSuccessfully hoisted 6 font(s) for the family 'Roboto Condensed': Roboto Condensed Italic, Roboto Condensed Light Italic, Roboto Condensed Bold Italic, Roboto Condensed Bold, Roboto Condensed Light, Roboto Condensed Regular[0m
-#> [32mSuccessfully hoisted 8 font(s) for the family 'Lora': Lora Italic, Lora SemiBold Italic, Lora Regular, Lora Bold, Lora SemiBold, Lora Medium Italic, Lora Medium, Lora Bold Italic[0m
-#> [32mSuccessfully hoisted 8 font(s) for the family 'Inconsolata': Inconsolata Bold, Inconsolata SemiBold, Inconsolata Light, Inconsolata Medium, Inconsolata ExtraLight, Inconsolata Black, Inconsolata Regular, Inconsolata ExtraBold[0m
 # On loading the package, the `font_hoist()` function automatically makes sure the fonts are available for use. You will see messages in the console to inform you whether the fonts loaded correctly or not. 
 library(ggplot2)
-#> Warning: package 'ggplot2' was built under R version 4.3.1
 
 palmerpenguins::penguins |>
   ggplot() +
@@ -79,11 +73,7 @@ palmerpenguins::penguins |>
        caption = "Demo plot, built with {palmerpenguins}") +
   guides(size = "none") +
   scale_fill_ti(continuous = TRUE) +
-  theme_ti(title_font = "Roboto Condensed Bold",
-           base_font = "Roboto Condensed",
-           background_color = TRUE,
-           void = FALSE) 
-#> Warning: Removed 2 rows containing missing values (`geom_point()`).
+  theme_ti() 
 ```
 
 <img src="man/figures/README-example-1.png" width="100%" />
