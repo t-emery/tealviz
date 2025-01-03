@@ -52,7 +52,7 @@
 
     msg <- paste0(
       sprintf("Note: Missing required fonts: %s\n", missing_fonts_msg),
-      "Would you like to install them from Google Fonts? (y/n): "
+      "Would you like to try to install them automatically from Google Fonts? (y/n): "
     )
 
     # Only prompt if in interactive mode
@@ -61,14 +61,26 @@
       if (tolower(substr(response, 1, 1)) == "y") {
         packageStartupMessage("\nAttempting to install fonts...")
 
+        # Wrap font installation in tryCatch to prevent failures
         results <- lapply(pkgenv$missing_fonts, function(font) {
-          if (install_google_font(font)) {
-            packageStartupMessage(sprintf("Successfully installed '%s'", font))
-            TRUE
-          } else {
-            packageStartupMessage(sprintf("Failed to install '%s'", font))
+          tryCatch({
+            success <- install_google_font(font)
+            if (success) {
+              packageStartupMessage(sprintf("Successfully installed '%s'", font))
+            } else {
+              packageStartupMessage(sprintf(
+                "Warning: Unable to install '%s'. Package will continue to load, but some fonts may be missing.",
+                font
+              ))
+            }
+            success
+          }, error = function(e) {
+            packageStartupMessage(sprintf(
+              "Warning: Error installing '%s': %s. Package will continue to load, but some fonts may be missing.",
+              font, conditionMessage(e)
+            ))
             FALSE
-          }
+          })
         })
 
         if (any(unlist(results))) {

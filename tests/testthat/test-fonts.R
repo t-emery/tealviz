@@ -33,7 +33,7 @@ test_that("download_font handles successful and failed downloads", {
   invalid_url <- "https://invalid.url/nonexistent.zip"
   expect_warning(
     result <- download_font(invalid_url, test_path),
-    "Could not resolve hostname"
+    "Could not resolve hostname|Couldn't resolve host name"
   )
   expect_false(result)
 
