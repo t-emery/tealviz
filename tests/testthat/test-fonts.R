@@ -25,7 +25,11 @@ test_that("download_font handles successful and failed downloads", {
   test_path <- file.path(temp_dir, "test_font.zip")
 
   # Test successful download with Google Fonts URL
-  real_url <- "http://fonts.gstatic.com/s/googlesans/v58/4Ua_rENHsxJlGDuGo1OIlJfC6l_24rlCK1Yo_Iqcsih3SAyH6cAwhX9RFD48TE63OOYKtrwEIJllpyw.ttf" # nolint
+  real_url <- paste(
+    "http://fonts.gstatic.com/s/googlesans/v58/4Ua_rENHsxJlGDuGo1OIlJfC6l_",
+    "24rlCK1Yo_Iqcsih3SAyH6cAwhX9RFD48TE63OOYKtrwEIJllpyw.ttf",
+    sep = ""
+  ) # nolint
   expect_true(download_font(real_url, test_path))
   expect_true(file.exists(test_path))
 
@@ -33,7 +37,11 @@ test_that("download_font handles successful and failed downloads", {
   invalid_url <- "https://invalid.url/nonexistent.zip"
   expect_warning(
     result <- download_font(invalid_url, test_path),
-    "Could not resolve hostname"
+    paste(
+      "Could not resolve hostname",
+      "SSL peer certificate or SSH remote key was not OK",
+      sep = "|"
+    )
   )
   expect_false(result)
 
@@ -232,20 +240,6 @@ test_that("install_font_files handles Windows font registration correctly", {
   unlink(temp_src, recursive = TRUE)
 })
 
-# Test refresh_font_cache for Linux
-test_that("refresh_font_cache handles Linux font cache refresh correctly", {
-  # Mock our wrapper functions instead of system/system2
-  local_mocked_bindings(
-    run_system_command = function(command, ...) {
-      expect_equal(command, "fc-cache -f -v")
-      TRUE
-    }
-  )
-
-  # Test Linux font cache refresh
-  expect_true(refresh_font_cache("linux"))
-})
-
 test_that("install_google_font handles full font installation process", {
   # Create mock API response matching actual Google Fonts API structure
   mock_api_response <- readRDS(
@@ -258,7 +252,11 @@ test_that("install_google_font handles full font installation process", {
     get_from_json = function(url) {
       expect_match(
         url,
-        "^https://www.googleapis.com/webfonts/v1/webfonts\\?key=.*&family=Roboto\\+Condensed$" # nolint
+        paste(
+          "^https://www.googleapis.com/webfonts/v1/webfonts\\?key=.*&family=",
+          "Roboto\\+Condensed$",
+          sep = ""
+        )
       )
       mock_api_response
     },

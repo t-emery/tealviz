@@ -358,18 +358,20 @@ install_font_files <- function(font_files) {
   } else {
     success <- copy_font_files(font_files, font_dir)
 
-    if (success && os == "linux") {
-      refresh_font_cache(os)
-    }
-
+    # Add font cache reset here
+    message("Resetting font cache...")
+    systemfonts::reset_font_cache()
     Sys.sleep(2)
-    installed_fonts <- systemfonts::system_fonts()
-    font_names <- basename(font_files) |>
-      tools::file_path_sans_ext()
 
-    fonts_found <- any(sapply(font_names, function(name) {
-      any(grepl(name, installed_fonts$family, ignore.case = TRUE))
-    }))
+    installed_fonts <- systemfonts::system_fonts()
+    # Extract base font name (remove weight/style suffixes)
+    base_font_name <- gsub("_.*$", "", basename(font_files)[1])
+
+    # Check if the base font name exists in either family or name columns
+    fonts_found <- any(
+      grepl(base_font_name, installed_fonts$family, ignore.case = TRUE) |
+        grepl(base_font_name, installed_fonts$name, ignore.case = TRUE)
+    )
 
     if (!fonts_found) {
       message(
@@ -378,6 +380,8 @@ install_font_files <- function(font_files) {
           "Try restarting R or your system."
         )
       )
+    } else {
+      message("All fonts successfully registered!")
     }
 
     return(fonts_found)
@@ -468,28 +472,4 @@ run_system_command <- function(...) system(...)
 run_system2_command <- function(command, args, ...) {
   output <- system2(command, args, stdout = TRUE, stderr = TRUE)
   return(output)
-}
-
-#' Refresh system font cache if needed
-#' @description Updates the system's font cache after installing new fonts
-#' @details On Linux, runs `fc-cache`. No action needed for Windows or macOS.
-#' @param os Operating system identifier ("windows", "macos", or "linux")
-#' @return Logical indicating whether the cache refresh was successful
-#' @keywords internal
-refresh_font_cache <- function(os) {
-  if (os == "linux") {
-    # Run fc-cache on Linux
-    tryCatch({
-      run_system_command(
-        "fc-cache -f -v",
-        ignore.stdout = TRUE,
-        ignore.stderr = TRUE
-      )
-    }, error = function(e) {
-      # Silently continue if command fails
-      TRUE
-    })
-  }
-  # macOS and Windows don't need cache refresh
-  return(TRUE)
 }

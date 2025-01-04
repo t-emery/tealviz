@@ -22,6 +22,7 @@
     available_fonts <- fonts_to_check[
       fonts_to_check %in% available_fonts$family
     ]
+
     if (length(available_fonts) > 0) {
       # Register lining numbers variant for each available font
       for (font in available_fonts) {
