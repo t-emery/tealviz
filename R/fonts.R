@@ -357,6 +357,11 @@ install_font_files <- function(font_files) {
       message("No fonts were successfully installed.")
     }
 
+    # Reset font cache after Windows installation
+    message("Resetting font cache...")
+    systemfonts::reset_font_cache()
+    Sys.sleep(2)
+
     return(success)
   } else {
     success <- copy_font_files(font_files, font_dir)
