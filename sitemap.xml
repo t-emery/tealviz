@@ -1,45 +1,24 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://t-emery.github.io/tealviz/404.html</loc>
-  </url>
-  <url>
-    <loc>https://t-emery.github.io/tealviz/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://t-emery.github.io/tealviz/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://t-emery.github.io/tealviz/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://t-emery.github.io/tealviz/index.html</loc>
-  </url>
-  <url>
-    <loc>https://t-emery.github.io/tealviz/reference/font_hoist.html</loc>
-  </url>
-  <url>
-    <loc>https://t-emery.github.io/tealviz/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://t-emery.github.io/tealviz/reference/scale_color_ti.html</loc>
-  </url>
-  <url>
-    <loc>https://t-emery.github.io/tealviz/reference/scale_fill_ti.html</loc>
-  </url>
-  <url>
-    <loc>https://t-emery.github.io/tealviz/reference/theme_ti.html</loc>
-  </url>
-  <url>
-    <loc>https://t-emery.github.io/tealviz/reference/theme_ti_1.html</loc>
-  </url>
-  <url>
-    <loc>https://t-emery.github.io/tealviz/reference/theme_ti_2.html</loc>
-  </url>
-  <url>
-    <loc>https://t-emery.github.io/tealviz/reference/ti_colors.html</loc>
-  </url>
-  <url>
-    <loc>https://t-emery.github.io/tealviz/reference/ti_palettes.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://t-emery.github.io/tealviz/404.html</loc></url>
+<url><loc>https://t-emery.github.io/tealviz/LICENSE-text.html</loc></url>
+<url><loc>https://t-emery.github.io/tealviz/LICENSE.html</loc></url>
+<url><loc>https://t-emery.github.io/tealviz/authors.html</loc></url>
+<url><loc>https://t-emery.github.io/tealviz/index.html</loc></url>
+<url><loc>https://t-emery.github.io/tealviz/reference/copy_font_files.html</loc></url>
+<url><loc>https://t-emery.github.io/tealviz/reference/download_font.html</loc></url>
+<url><loc>https://t-emery.github.io/tealviz/reference/extract_font_files.html</loc></url>
+<url><loc>https://t-emery.github.io/tealviz/reference/font_hoist.html</loc></url>
+<url><loc>https://t-emery.github.io/tealviz/reference/get_font_directory.html</loc></url>
+<url><loc>https://t-emery.github.io/tealviz/reference/get_os.html</loc></url>
+<url><loc>https://t-emery.github.io/tealviz/reference/index.html</loc></url>
+<url><loc>https://t-emery.github.io/tealviz/reference/install_font_files.html</loc></url>
+<url><loc>https://t-emery.github.io/tealviz/reference/install_google_font.html</loc></url>
+<url><loc>https://t-emery.github.io/tealviz/reference/scale_color_ti.html</loc></url>
+<url><loc>https://t-emery.github.io/tealviz/reference/scale_fill_ti.html</loc></url>
+<url><loc>https://t-emery.github.io/tealviz/reference/theme_ti.html</loc></url>
+<url><loc>https://t-emery.github.io/tealviz/reference/theme_ti_1.html</loc></url>
+<url><loc>https://t-emery.github.io/tealviz/reference/theme_ti_2.html</loc></url>
+<url><loc>https://t-emery.github.io/tealviz/reference/ti_colors.html</loc></url>
+<url><loc>https://t-emery.github.io/tealviz/reference/ti_palettes.html</loc></url>
 </urlset>
+
