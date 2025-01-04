@@ -53,7 +53,8 @@
 
     msg <- paste0(
       sprintf("Note: Missing required fonts: %s\n", missing_fonts_msg),
-      "Would you like to try to install them automatically from Google Fonts? (y/n): "
+      "Would you like to try to install them automatically ",
+      "from Google Fonts? (y/n): "
     )
 
     # Only prompt if in interactive mode
@@ -67,17 +68,30 @@
           tryCatch({
             success <- install_google_font(font)
             if (success) {
-              packageStartupMessage(sprintf("Successfully installed '%s'", font))
+              packageStartupMessage(
+                sprintf("Successfully installed '%s'", font)
+              )
             } else {
-              packageStartupMessage(sprintf(
-                "Warning: Unable to install '%s'. Package will continue to load, but some fonts may be missing.",
-                font
-              ))
+              packageStartupMessage(
+                sprintf(
+                  paste(
+                    "Warning: Unable to install '%s'. Package will continue ",
+                    "to load, but some fonts may be missing.\n",
+                    "You can install them manually from Google Fonts.",
+                    sep = ""
+                  ),
+                  font
+                )
+              )
             }
             success
           }, error = function(e) {
             packageStartupMessage(sprintf(
-              "Warning: Error installing '%s': %s. Package will continue to load, but some fonts may be missing.",
+              paste(
+                "Warning: Error installing '%s': %s. Package will continue ",
+                "to load, but some fonts may be missing.",
+                sep = ""
+              ),
               font, conditionMessage(e)
             ))
             FALSE
