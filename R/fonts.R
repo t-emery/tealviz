@@ -38,7 +38,7 @@ font_hoist <- function(family_name, silent = FALSE, check_only = FALSE) {
   # Remove ANSI color codes or make them conditional
   # Only use colors when in an interactive terminal
   use_colors <- interactive()
-  
+
   # Define color codes conditionally
   green <- if (use_colors) "\033[32m" else ""
   red <- if (use_colors) "\033[31m" else ""
