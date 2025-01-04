@@ -86,8 +86,8 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">palmerpenguins</span><span class="fu">::</span><span class="va">penguins</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">bill_length_mm</span><span class="op">)</span>,</span>
-<span>                <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">flipper_length_mm</span><span class="op">)</span>,</span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">bill_length_mm</span><span class="op">)</span>, </span>
+<span>                <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">flipper_length_mm</span><span class="op">)</span>, </span>
 <span>                <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">body_mass_g</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bill_length_mm</span>,</span>
@@ -104,10 +104,10 @@
 <span>       caption <span class="op">=</span> <span class="st">"Demo plot, built with {palmerpenguins}"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html" class="external-link">guides</a></span><span class="op">(</span>size <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="reference/scale_fill_ti.html">scale_fill_ti</a></span><span class="op">(</span>continuous <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="reference/theme_ti.html">theme_ti</a></span><span class="op">(</span>title_font <span class="op">=</span> <span class="st">"Roboto Condensed Bold"</span>,</span>
+<span>  <span class="fu"><a href="reference/theme_ti.html">theme_ti</a></span><span class="op">(</span>title_font <span class="op">=</span> <span class="st">"Roboto Condensed"</span>,</span>
 <span>           base_font <span class="op">=</span> <span class="st">"Roboto Condensed"</span>,</span>
 <span>           background_color <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>           void <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<span>           void <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> </span></code></pre></div>
 <p><img src="reference/figures/README-example-1.png" width="100%"></p>
 <p>The Title and Subtitle use <a href="https://wilkelab.org/ggtext/articles/introduction.html" class="external-link"><code>ggtext</code></a> under the hood. This adds powerful functionality, to be explored in its own vignette. For now, know that it will auto-wrap the subtitle so you can provide commentary about the visualizations key takeaways without worrying about line breaks.</p>
 </div>
