@@ -79,7 +79,7 @@ palmerpenguins::penguins |>
   theme_ti(title_font = "Roboto Condensed",
            base_font = "Roboto Condensed",
            background_color = TRUE,
-           void = FALSE) 
+           void = FALSE)
 ```
 
 The Title and Subtitle use [`ggtext`](https://wilkelab.org/ggtext/articles/introduction.html) under the hood. This adds powerful functionality, to be explored in its own vignette. For now, know that it will auto-wrap the subtitle so you can provide commentary about the visualizations key takeaways without worrying about line breaks.
