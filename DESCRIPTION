@@ -14,7 +14,8 @@ BugReports: https://github.com/t-emery/tealviz/issues
 Suggests: 
     jsonlite,
     withr,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    ragg
 Config/testthat/edition: 3
 Imports: 
     dplyr,
@@ -24,6 +25,3 @@ Imports:
     purrr,
     systemfonts,
     textshaping
-Enhances:
-    extrafont,
-    ragg

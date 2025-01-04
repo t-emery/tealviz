@@ -12,18 +12,18 @@ $SkippedCount = 0
 foreach ($FontPath in $FontFiles) {
     $FontName = Split-Path $FontPath -Leaf
     Write-Host "Processing font: $FontName"
-    
+
     If (Test-Path "$LocalFontFolder\$FontName") {
         Write-Host "Font already installed: $FontName"
         $SkippedCount++
         continue
     }
-    
+
     try {
         # Copy font to local fonts folder
         Write-Host "Copying to local fonts folder..."
         Copy-Item $FontPath -Destination "$LocalFontFolder\$FontName" -ErrorAction Stop
-        
+
         # Register in user's registry
         $RegPath = "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Fonts"
         $FontType = switch ([System.IO.Path]::GetExtension($FontName)) {
@@ -33,7 +33,7 @@ foreach ($FontPath in $FontFiles) {
         }
         $RegName = [System.IO.Path]::GetFileNameWithoutExtension($FontName) + $FontType
         New-ItemProperty -Path $RegPath -Name $RegName -Value "$LocalFontFolder\$FontName" -PropertyType String -Force | Out-Null
-        
+
         Write-Host "Successfully installed: $FontName"
         $SuccessCount++
     }
