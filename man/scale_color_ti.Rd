@@ -15,20 +15,28 @@ scale_color_ti(
 )
 }
 \arguments{
-\item{palette}{The TI palette you want to use. Choose from "default", "teal_to_gold", "teal_to_crimson", "cool_colors", "warm_colors", "skip_gold", "neg_to_pos", "us_rep_to_dem" or "divergent"}
+\item{palette}{The TI palette you want to use. Choose from "default",
+"teal_to_gold", "teal_to_crimson", "cool_colors", "warm_colors", "skip_gold",
+"neg_to_pos", "us_rep_to_dem" or "divergent"}
 
-\item{reverse}{Logical. Default is \code{FALSE}. \code{TRUE} reverses the palette (e.g. makes "neg_to_pos" start with the positive end rather than the negative end of the colour palette).}
+\item{reverse}{Logical. Default is \code{FALSE}. \code{TRUE} reverses the palette (e.g.
+makes "neg_to_pos" start with the positive end rather than the negative end
+of the colour palette).}
 
-\item{continuous}{Logical. Default is \code{FALSE}. Change to \code{TRUE} when applying the color scale to a continuous variable}
+\item{continuous}{Logical. Default is \code{FALSE}. Change to \code{TRUE} when applying
+the color scale to a continuous variable}
 
-\item{.aesthetic}{Default is "color". Can be changed to "fill", but it's best to use \code{scale_fill_ti()} to apply the colour palettes to the fill aesthetic.}
+\item{.aesthetic}{Default is "color". Can be changed to "fill", but it's best
+to use \code{scale_fill_ti()} to apply the colour palettes to the fill aesthetic.}
 
 \item{.colors}{Used to access \code{ti_colors}. Please leave as is.}
 
 \item{.palettes}{Used to access \code{ti_palettes}. Please leave as is.}
 
-\item{...}{Additional arguments to pass to \code{ggplot2::continuous_scale} / \code{ggplot2::discrete_scale} (e.g. \code{guide}, \code{limits}, etc.)}
+\item{...}{Additional arguments to pass to \code{ggplot2::continuous_scale} /
+\code{ggplot2::discrete_scale} (e.g. \code{guide}, \code{limits}, etc.)}
 }
 \description{
-A function to apply the TI color palettes to ggplots, using interpolation to ensure the right number of colors
+A function to apply the TI color palettes to ggplots, using interpolation to
+ensure the right number of colors
 }

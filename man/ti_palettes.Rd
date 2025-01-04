@@ -3,7 +3,8 @@
 \docType{data}
 \name{ti_palettes}
 \alias{ti_palettes}
-\title{Set of color palettes used in the \code{scale_color_ti()} and \code{scale_fill_ti()} functions}
+\title{Set of color palettes used in the \code{scale_color_ti()} and \code{scale_fill_ti()}
+functions}
 \format{
 An object of class \code{list} of length 9.
 }
@@ -11,8 +12,9 @@ An object of class \code{list} of length 9.
 ti_palettes
 }
 \description{
-Palettes created using the TI anchor colors. To view the list of palettes and their associated hex codes, use \code{ti_palettes}).
-Note that the palettes used in plots interpolate between the anchor colors, allowing each palette to be used with any number
-of colors (within reason!)
+Palettes created using the TI anchor colors. To view the list of palettes and
+their associated hex codes, use \code{ti_palettes}).
+Note that the palettes used in plots interpolate between the anchor colors,
+allowing each palette to be used with any number of colors (within reason!)
 }
 \keyword{datasets}
