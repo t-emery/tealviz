@@ -39,6 +39,7 @@ test_that("download_font handles successful and failed downloads", {
     result <- download_font(invalid_url, test_path),
     paste(
       "Could not resolve hostname",
+      "Couldn't resolve host name",
       "SSL peer certificate or SSH remote key was not OK",
       sep = "|"
     )
