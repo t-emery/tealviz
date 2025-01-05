@@ -4,6 +4,8 @@
 # tealviz <a href="https://t-emery.github.io/tealviz/"><img src="man/figures/logo.png" align="right" height="139" alt="tealviz website" /></a>
 
 <!-- badges: start -->
+
+[![R-CMD-check](https://github.com/Promptly-Technologies-LLC/tealviz/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Promptly-Technologies-LLC/tealviz/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 `tealviz` is a collection of data visualization tools for [Teal
@@ -21,6 +23,16 @@ researcher, not an artist, so having such a skilled designer help me
 build this package was a huge help. I highly recommend her work. The
 inspired coding & visual design work are hers. The mistakes are mine.
 
+## Prerequisites
+
+To install on Ubuntu, you may first need to install `libmagick++-dev` on
+your system by running the following commands in your terminal:
+
+``` bash
+sudo apt-get update
+sudo apt-get install libmagick++-dev
+```
+
 ## Installation
 
 You can install the development version of tealviz from
@@ -32,13 +44,14 @@ devtools::install_github("t-emery/tealviz")
 
 ### Fonts
 
-`tealvis` assumes that the user has fonts installed on their computer.
-The package will not install fonts for you. If you do not have the fonts
-installed, the package will not work. The fonts used in this package
-are: `Roboto`, `Roboto Condensed`, `Lora`, and `Lora Bold`. You can
-install them from [Google Fonts](https://fonts.google.com/). They are
-also available as assets in the `tealviz` package. You can find them in
-the
+`tealviz` assumes that the user has fonts installed on their computer.
+The package will attempt to install fonts for you, but may not succeed
+depending on your operating system and permissions. If you do not have
+the fonts installed, the package will not work. The fonts used in this
+package are: `Roboto`, `Roboto Condensed`, `Lora`, and `Lora Bold`. You
+can install them manually from [Google
+Fonts](https://fonts.google.com/). They are also available as assets in
+the `tealviz` package. You can find them in the
 [`inst/assets/fonts`](https://github.com/t-emery/tealviz/tree/main/inst/assets/fonts)
 folder of the GitHub repo. You can install them with the `extrafont`
 package.
@@ -58,6 +71,9 @@ library(tealviz)
 library(ggplot2)
 
 palmerpenguins::penguins |>
+  dplyr::filter(!is.na(bill_length_mm),
+                !is.na(flipper_length_mm),
+                !is.na(body_mass_g)) |>
   ggplot() +
   geom_point(aes(x = bill_length_mm,
                  y = flipper_length_mm,
@@ -73,7 +89,10 @@ palmerpenguins::penguins |>
        caption = "Demo plot, built with {palmerpenguins}") +
   guides(size = "none") +
   scale_fill_ti(continuous = TRUE) +
-  theme_ti() 
+  theme_ti(title_font = "Roboto Condensed Bold",
+           base_font = "Roboto Condensed",
+           background_color = TRUE,
+           void = FALSE)
 ```
 
 <img src="man/figures/README-example-1.png" width="100%" />
