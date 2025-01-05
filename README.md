@@ -89,10 +89,7 @@ palmerpenguins::penguins |>
        caption = "Demo plot, built with {palmerpenguins}") +
   guides(size = "none") +
   scale_fill_ti(continuous = TRUE) +
-  theme_ti(title_font = "Roboto Condensed",
-           base_font = "Roboto Condensed",
-           background_color = TRUE,
-           void = FALSE) 
+  theme_ti()
 ```
 
 <img src="man/figures/README-example-1.png" width="100%" />

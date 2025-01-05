@@ -10,7 +10,8 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.path = "man/figures/README-",
   out.width = "100%",
-  dev = "ragg_png"
+  dev = "ragg_png",
+  dpi = 300
 )
 ```
 
@@ -54,32 +55,43 @@ The core of the `tealviz` package is a series of `ggplot2` custom themes, and cu
 
 ``` {r example}
 library(tealviz)
-# On loading the package, the `font_hoist()` function automatically makes sure the fonts are available for use. You will see messages in the console to inform you whether the fonts loaded correctly or not. 
+# On loading the package, it automatically makes sure the fonts are available
+# for use. You may see messages in the console about fonts being installed.
 library(ggplot2)
 
 palmerpenguins::penguins |>
-  dplyr::filter(!is.na(bill_length_mm), 
-                !is.na(flipper_length_mm), 
-                !is.na(body_mass_g)) |>
+  dplyr::filter(
+    !is.na(bill_length_mm),
+    !is.na(flipper_length_mm),
+    !is.na(body_mass_g)
+  ) |>
   ggplot() +
-  geom_point(aes(x = bill_length_mm,
-                 y = flipper_length_mm,
-                 size = body_mass_g,
-                 fill = body_mass_g),
-             shape = 21,
-             color = ti_colors$background) +
-  labs(title = "Perfectly proportional penguins",
-       subtitle = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-       x = "Bill length (mm)",
-       y = "Flipper length (mm)",
-       fill = "Body mass (g)",
-       caption = "Demo plot, built with {palmerpenguins}") +
+  geom_point(
+    aes(
+      x = bill_length_mm,
+      y = flipper_length_mm,
+      size = body_mass_g,
+      fill = body_mass_g
+    ),
+    shape = 21,
+    color = ti_colors$background
+  ) +
+  labs(
+    title = "Perfectly proportional penguins",
+    subtitle = paste0(
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do ",
+      "eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ",
+      "ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut ",
+      "aliquip ex ea commodo consequat."
+    ),
+    x = "Bill length (mm)",
+    y = "Flipper length (mm)",
+    fill = "Body mass (g)",
+    caption = "Demo plot, built with {palmerpenguins}"
+  ) +
   guides(size = "none") +
   scale_fill_ti(continuous = TRUE) +
-  theme_ti(title_font = "Roboto Condensed",
-           base_font = "Roboto Condensed",
-           background_color = TRUE,
-           void = FALSE)
+  theme_ti()
 ```
 
 The Title and Subtitle use [`ggtext`](https://wilkelab.org/ggtext/articles/introduction.html) under the hood. This adds powerful functionality, to be explored in its own vignette. For now, know that it will auto-wrap the subtitle so you can provide commentary about the visualizations key takeaways without worrying about line breaks.
