@@ -16,6 +16,9 @@ create_base_theme <- function(base_font, base_text_size, colors) {
       ),
       axis.title.y = ggplot2::element_text(
         margin = ggplot2::margin(0, base_text_size, 0, 0)
+      ),
+      plot.title = ggplot2::element_text(
+        face = "bold"
       )
     )
 }
@@ -97,7 +100,7 @@ create_text_elements <- function(
 #'
 # Main theme function
 theme_ti <- function(
-  title_font = "Roboto Condensed Bold",
+  title_font = "Roboto Condensed",
   base_font = "Roboto Condensed",
   void = FALSE,
   show_grid_lines = TRUE,
