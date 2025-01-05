@@ -5,7 +5,7 @@
 \title{theme_ti}
 \usage{
 theme_ti(
-  title_font = "Roboto Condensed Bold",
+  title_font = "Roboto Condensed",
   base_font = "Roboto Condensed",
   void = FALSE,
   show_grid_lines = TRUE,

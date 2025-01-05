@@ -71,8 +71,8 @@ library(tealviz)
 library(ggplot2)
 
 palmerpenguins::penguins |>
-  dplyr::filter(!is.na(bill_length_mm),
-                !is.na(flipper_length_mm),
+  dplyr::filter(!is.na(bill_length_mm), 
+                !is.na(flipper_length_mm), 
                 !is.na(body_mass_g)) |>
   ggplot() +
   geom_point(aes(x = bill_length_mm,

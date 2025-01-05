@@ -4,7 +4,7 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-```{r, include = FALSE}
+``` {r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -43,15 +43,17 @@ devtools::install_github("t-emery/tealviz")
 
 ### Fonts
 
-`tealviz` assumes that the user has fonts installed on their computer. The package will attempt to install fonts for you, but may not succeed depending on your operating system and permissions. If you do not have the fonts installed, the package will not work. The fonts used in this package are: `Roboto`, `Roboto Condensed`, `Lora`, and `Lora Bold`. You can install them manually from [Google Fonts](https://fonts.google.com/). They are also available as assets in the `tealviz` package. You can find them in the [`inst/assets/fonts`](https://github.com/t-emery/tealviz/tree/main/inst/assets/fonts) folder of the GitHub repo. You can install them with the `extrafont` package.
+When you load the `tealviz` package with `library(tealviz)`, you will be prompted to install the required fonts (`Roboto`, `Roboto Condensed`, `Lora`, and `Lora Bold`) automatically. Simply type `y` and press enter to install them. (In CI workflows, this is done automatically.)
 
-Fonts are tricky in R. If you're having trouble, read this [excellent explainer by June Choe](https://yjunechoe.github.io/posts/2021-06-24-setting-up-and-debugging-custom-fonts/).
+If you'd prefer to install the fonts manually, you can get them from [Google Fonts](https://fonts.google.com/). They are also available as assets in the `tealviz` package. You can find them in the [`inst/assets/fonts`](https://github.com/t-emery/tealviz/tree/main/inst/assets/fonts) folder of the GitHub repo. Place them in your system's `fonts` directory. (The folder's exact location will vary by operating system.)
+
+On Windows, custom system fonts may be unavailable to the default RMarkdown rendering engine. If you're having trouble, try installing the `ragg` package with `install.packages("ragg")` and then setting `dev = "ragg_png"` in your RMarkdown chunk options. Just add `knitr::opts_chunk$set(dev = "ragg_png")` to the top of your RMarkdown file. You can also set the option globally in RStudio by going to `Tools` > `Global Options` > `General` > `Graphics` and setting the `Backend` field to `AGG`.
 
 ## Example
 
 The core of the `tealviz` package is a series of `ggplot2` custom themes, and custom colors/palettes. 
 
-```{r example}
+``` {r example}
 library(tealviz)
 # On loading the package, it automatically makes sure the fonts are available
 # for use. You may see messages in the console about fonts being installed.
@@ -92,4 +94,4 @@ palmerpenguins::penguins |>
   theme_ti()
 ```
 
-The Title and Subtitle use [`ggtext`](https://wilkelab.org/ggtext/articles/introduction.html) under the hood. This adds powerful functionality, to be explored in its own vignette. For now, know that it will auto-wrap the subtitle so you can provide commentary about the visualizations key takeaways without worrying about line breaks. 
+The Title and Subtitle use [`ggtext`](https://wilkelab.org/ggtext/articles/introduction.html) under the hood. This adds powerful functionality, to be explored in its own vignette. For now, know that it will auto-wrap the subtitle so you can provide commentary about the visualizations key takeaways without worrying about line breaks.
